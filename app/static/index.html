@@ -711,8 +711,17 @@
             flex-direction: column;
         }
 
+        img, canvas {
+            image-rendering: pixelated;
+        }
+
+        #phaser-game canvas {
+            cursor: url('assets/original/cursor.cur') 15 14, crosshair;
+        }
+
         .team img {
             display: block;
+            width: 96px;
             max-width: calc(100% - 15px);
             max-height: calc(100% - 15px);
             filter: drop-shadow(3px 2px 0 #111);
@@ -833,13 +842,13 @@
                             <div class="col">
                                 <div class="team">
                                     <div class="team-name" style="color: #00ff00">Gnarf</div>
-                                    <img src="assets/ladypig.gif" />
+                                    <img src="assets/original/portrait-player.png" />
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="team">
                                         <div class="team-name" style="color: #ff0000">Flubber</div>
-                                        <img src="assets/orc.gif" />
+                                        <img src="assets/original/portrait-enemy-1.png" />
                                 </div>
                             </div>
                         </div>
@@ -847,13 +856,13 @@
                             <div class="col">
                                     <div class="team">
                                         <div class="team-name" style="color: #ff0000">Skully</div>
-                                        <img src="assets/skull.gif" />
+                                        <img src="assets/original/portrait-enemy-2.png" />
                                     </div>
                             </div>
                             <div class="col">
                                 <div class="team">
                                     <div class="team-name" style="color: #ff0000">Depton</div>
-                                    <img src="assets/fripo.gif" />
+                                    <img src="assets/original/portrait-enemy-3.png" />
                                 </div>
                             </div>
                         </div>
@@ -875,7 +884,7 @@
                             <div class="row">
                                 <div id="planet-inhabitance-wrapper" class="screws">
                                     <div id="planet-inhabitance-image" style="flex: 1">
-                                        <img src="assets/planets/planet-barren-sprite.png" />
+                                        <img src="assets/original/planet-barren.png" />
                                     </div>
                                     <div style="flex: 4; padding: 10px 0">
                                         <span id="planet-inhabitance">Uninhabited</span>: <span id="planet-name">Unknown
@@ -949,28 +958,28 @@
                         <div class="col">
                             <div class="row">
                                 <div class="stat-box">
-                                    <img src="assets/shield.png" />
+                                    <img src="assets/original/shield.png" />
                                     x
                                     <span id="ship-shields" class="stat-text">0</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="stat-box">
-                                    <img src="assets/people.png" />
+                                    <img src="assets/original/people.png" />
                                     x
                                     <span class="stat-text ship-colonists">0</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="stat-box">
-                                    <img src="assets/planet.png" />
+                                    <img src="assets/original/planet.png" />
                                     x
                                     <span id="total-planets" class="stat-text">0</span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="stat-box">
-                                    <img src="assets/money.png" />
+                                    <img src="assets/original/money.png" />
                                     x
                                     <span class="ship-money stat-text"></span>
                                 </div>
@@ -1059,29 +1068,29 @@
             </div>
             <div class="right screws">
                 <div class="item-buttons" style="margin-top: 4px">
-                    <button id="mine"><img src="assets/icon-mine2.png" /><br />Mine <br /><span id="item-mine-count">&nbsp;</span></button>
-                    <button id="populate"><img src="assets/icon-populate.png" /><br />Colonise <br /><span class="ship-colonists">&nbsp;</span>
+                    <button id="mine"><img src="assets/original/icon-mine2.png" /><br />Mine <br /><span id="item-mine-count">&nbsp;</span></button>
+                    <button id="populate"><img src="assets/original/icon-populate.png" /><br />Colonise <br /><span class="ship-colonists">&nbsp;</span>
                     </button>
-                    <button id="open-invest"><img src="assets/icon-invest.png" /><br />Invest <br /><span id="item-open-invest-count">&nbsp;</span></button>
-                    <button id="open-buy"><img src="assets/icon-buy.png" /><br />Buy <br /><span id="item-open-buy-count">&nbsp;</span></button>
+                    <button id="open-invest"><img src="assets/original/icon-invest.png" /><br />Invest <br /><span id="item-open-invest-count">&nbsp;</span></button>
+                    <button id="open-buy"><img src="assets/original/icon-buy.png" /><br />Buy <br /><span id="item-open-buy-count">&nbsp;</span></button>
                 </div>
                 <div id="phaser-game"></div>
                 <div class="item-buttons" style="margin-top: 4px">
-                    <button id="item-laser" class="active"><img src="assets/icon-laser.png" /><br />Laser <br /><span
+                    <button id="item-laser" class="active"><img src="assets/original/icon-laser.png" /><br />Laser <br /><span
                             id="item-laser-count">-</span></button>
-                    <button id="item-torpedo"><img src="assets/icon-torpedo.png" /><br />Torpedo <br /><span id="item-torpedo-count">0</span></button>
-                    <button id="item-mine"><img src="assets/icon-mine.png" /><br />Timed Mine <br /><span id="item-mine-count">0</span></button>
-                    <button id="item-hot-torpedo"><img src="assets/icon-hot-torpedo.png" /><br />Hot Torpedo <br /><span
+                    <button id="item-torpedo"><img src="assets/original/icon-torpedo.png" /><br />Torpedo <br /><span id="item-torpedo-count">0</span></button>
+                    <button id="item-mine"><img src="assets/original/icon-mine.png" /><br />Timed Mine <br /><span id="item-mine-count">0</span></button>
+                    <button id="item-hot-torpedo"><img src="assets/original/icon-hot-torpedo.png" /><br />Hot Torpedo <br /><span
                             id="item-hot-torpedo-count">0</span></button>
-                    <button id="item-nuke"><img src="assets/icon-nuclear.png" /><br />Neutron Bomb <br /><span id="item-nuke-count">0</span></button>
-                    <button id="item-bio"><img src="assets/icon-bio.png" /><br />Plague Bomb <br /><span id="item-bio-count">0</span></button>
+                    <button id="item-nuke"><img src="assets/original/icon-nuclear.png" /><br />Neutron Bomb <br /><span id="item-nuke-count">0</span></button>
+                    <button id="item-bio"><img src="assets/original/icon-bio.png" /><br />Plague Bomb <br /><span id="item-bio-count">0</span></button>
                 </div>
                 <div class="item-buttons">
-                    <button id="item-shields" class="active"><img src="assets/shield.png" /><br />Shields <span id="item-shields-count"></span></button>
-                    <button id="item-cloak"><img src="assets/icon-cloak.png" /><br />Cloak <span id="item-cloak-count"></span></button>
-                    <button id="item-sun"><img src="assets/icon-sun.png" /><br />Disrupter <span id="item-sun-count"></span></button>
-                    <button id="item-warp"><img src="assets/icon-warp.png" /><br />Warp <span id="item-warp-count"></span></button>
-                    <button id="item-anti-bio"><img src="assets/icon-anti-bio.png" /><br />Plague Cure <span id="item-anti-bio-count"></span></button>
+                    <button id="item-shields" class="active"><img src="assets/original/shield.png" /><br />Shields <span id="item-shields-count"></span></button>
+                    <button id="item-cloak"><img src="assets/original/icon-cloak.png" /><br />Cloak <span id="item-cloak-count"></span></button>
+                    <button id="item-sun"><img src="assets/original/icon-sun.png" /><br />Disrupter <span id="item-sun-count"></span></button>
+                    <button id="item-warp"><img src="assets/original/icon-warp.png" /><br />Warp <span id="item-warp-count"></span></button>
+                    <button id="item-anti-bio"><img src="assets/original/icon-anti-bio.png" /><br />Plague Cure <span id="item-anti-bio-count"></span></button>
                 </div>
             </div>
         </div>
@@ -1099,19 +1108,19 @@
                     <div class="row">
                         <div class="col">
                             <button class="invest-button" id="invest-agriculture-button">
-                                <img src="assets/farming.png" /><br />
+                                <img src="assets/original/farming.png" /><br />
                                 Agriculture <br /><span id="invest-agriculture"></span>%
                             </button>
                         </div>
                         <div class="col">
                             <button class="invest-button" id="invest-shield-button">
-                                <img src="assets/shield.png" /><br />
+                                <img src="assets/original/shield.png" /><br />
                                 Defence <br /><span id="invest-shield"></span>%
                             </button>
                         </div>
                         <div class="col">
                             <button class="invest-button" id="invest-education-button">
-                                <img src="assets/education.png" /><br />
+                                <img src="assets/original/education.png" /><br />
                                 Education <br /><span id="invest-education"></span>%
                             </button>
                         </div>
@@ -1119,19 +1128,19 @@
                     <div class="row">
                         <div class="col">
                             <button class="invest-button" id="invest-industry-button">
-                                <img src="assets/industry.png" /><br />
+                                <img src="assets/original/industry.png" /><br />
                                 Industry <br /><span id="invest-industry"></span>%
                             </button>
                         </div>
                         <div class="col">
                             <button class="invest-button" id="invest-mining-button">
-                                <img src="assets/mining.png" /><br />
+                                <img src="assets/original/mining.png" /><br />
                                 Mining <br /><span id="invest-mining"></span>%
                             </button>
                         </div>
                         <div class="col">
                             <button class="invest-button" id="invest-spaceport-button">
-                                <img src="assets/spaceport.png" /><br />
+                                <img src="assets/original/spaceport.png" /><br />
                                 Space Port <br /><span id="invest-spaceport"></span>%
                             </button>
                         </div>
@@ -1186,7 +1195,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="buy-item-image">
-                            <img id="item-icon" src="assets/cargo.png" style="height: 50px" />
+                            <img id="item-icon" src="assets/original/cargo.png" style="height: 50px" />
                         </div>
                     </div>
                     <div class="col" style="flex: 10">

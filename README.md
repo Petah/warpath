@@ -55,3 +55,28 @@ Use `npm audit` to inspect remaining dependency advisories. Do not run `npm audi
 - `app/ui.ts`, `app/static/index.html`: interface and controls.
 - `app/static/assets/`: images and audio.
 - `brunch-config.coffee`: build and local server configuration.
+
+## Extract the original Windows assets
+
+Place the original `wpsetup.exe` in the project root. The extractor reads its ZIP archive and the Win16 resource table in `WARPATH.EXE`; it does not run either executable. Python 3 and Pillow are required (install Pillow in a virtual environment with `python3 -m pip install Pillow` if needed).
+
+```sh
+python3 scripts/extract-original-assets.py
+python3 -m http.server 3334 --bind 127.0.0.1 --directory original-assets
+```
+
+Open http://127.0.0.1:3334 for the image and sound gallery. The supplied installer yields 27 original WAV files, 29 BMPs, 66 ICOs, and one CUR, plus lossless PNG previews and a contact sheet. The manifest records source hashes, resource IDs, offsets, and audio properties. All 213 executable resources are also preserved as raw bytes, including menus and dialogs; the original readme, executable, and help file are retained under `source/`. Help-file contents and the unrelated bundled NetSpades archive are not decoded.
+
+Generated files live in the ignored `original-assets/` directory and are not bundled into the remake. The extractor refuses to overwrite an existing output directory; use `--output another-directory` for another extraction. Windows icon/cursor masks can invert the background, which cannot be fully represented by PNG alpha; the ICO/CUR copies preserve the original masks.
+
+### Prepare the remake's assets
+
+The game uses converted original artwork and PCM WAV effects from `app/static/assets/original/`. These files are included in the project, so running the game does not require Python or the installer. To reproduce them after extraction:
+
+```sh
+python3 scripts/prepare-original-assets.py
+```
+
+The conversion script maps resource IDs to portraits, ships, shop/weapon icons, and equipment; its output manifest records the source of each asset. Original bitmaps are projected onto rotating globes for the remake's eleven planet classes, and the original explosion icon is expanded/faded into compatible animation sheets. These animations are adaptations, not recovered animation sequences. Pixel art uses nearest-neighbor scaling, and the planet information panel uses a single preview frame.
+
+Laser, impact, torpedo, mine, mining, explosion, neutron, menu, and defeat effects use original WAVs. One-shot audio is released after playback, and laser firing plays once per shot. The installer has no music track, so the jam soundtrack is no longer played. Existing CSS panels, starfield, HUD gauges, and simple beam/particle helpers remain. `warpath.hlp` matches the help file preserved from this installer byte for byte.

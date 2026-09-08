@@ -133,8 +133,6 @@ export default class DefaultScene extends Phaser.Scene {
         this.cameras.main.startFollow(this.playerShip.image, true, 0.05, 0.05);
 
 
-        // turn on autdio with loop
-        this.soundManager.playLoop("bgm", 120.0, 0.1);
 
 
     }

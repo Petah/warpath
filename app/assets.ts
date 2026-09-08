@@ -10,46 +10,45 @@ export default class Assets {
         this.scene.load.image('blue-circle', 'blue-circle.png');
         this.scene.load.image('star', 'star.png');
         this.scene.load.image('bullet', 'bullet.png');
-        this.scene.load.image('torpedo', 'torpedo.png')
-        this.scene.load.image('mine', 'mine.png');
-        this.scene.load.image('hot-torpedo', 'hot-torpedo.png')
-        this.scene.load.image('nuke', 'nuke.png')
-        this.scene.load.image('ship', 'ship.png');
-        this.scene.load.image('ship2', 'ship2.png');
-        this.scene.load.image('ship3', 'ship3.png');
-        this.scene.load.image('ship4', 'ship4.png');
+        this.scene.load.image('torpedo', 'original/torpedo.png')
+        this.scene.load.image('mine', 'original/mine.png');
+        this.scene.load.image('hot-torpedo', 'original/hot-torpedo.png')
+        this.scene.load.image('nuke', 'original/nuke.png')
+        this.scene.load.image('ship', 'original/ship.png');
+        this.scene.load.image('ship2', 'original/ship2.png');
+        this.scene.load.image('ship3', 'original/ship3.png');
+        this.scene.load.image('ship4', 'original/ship4.png');
         this.scene.load.image('laser', 'laser.png');
 
         var planetNames = ["barren", "continental", "desert", "forest", "gaia", "gasgiant", "ice", "jungle", "ocean", "tundra", "volcanic"];
         for (var planetName of planetNames) {
-            this.scene.load.spritesheet("planet-" + planetName, "planet-" + planetName + "-sprite.png", {
+            this.scene.load.spritesheet("planet-" + planetName, "original/planet-" + planetName + "-sprite.png", {
                 frameWidth: 72,
                 frameHeight: 69,
             });
         }
 
-        this.scene.load.spritesheet("nuclear-explosion", "explosion-sprite2.png", {
+        this.scene.load.spritesheet("nuclear-explosion", "original/nuclear-explosion-sprite.png", {
             frameWidth: 126,
             frameHeight: 124,
         });
 
         for (const explosionName of ["explosion", "explosion1", "explosion2", "explosion3", "explosion4"]) {
-            this.scene.load.spritesheet(explosionName, explosionName + "-sprite.png", {
+            this.scene.load.spritesheet(explosionName, "original/" + explosionName + "-sprite.png", {
                 frameWidth: 64,
                 frameHeight: 64,
             });
         }
 
-        this.scene.load.audio('bgm', 'audio/Warpath BGM.mp3');
-        this.scene.load.audio('numkey', 'audio/numkey.wav');
-        this.scene.load.audio('mining', 'audio/mining.mp3');
-        this.scene.load.audio('explosion', 'audio/explosion.mp3');
-        this.scene.load.audio('lazer', 'audio/lazer.wav');
-        this.scene.load.audio('laser', 'audio/laser.mp3');
-        this.scene.load.audio('laser-hit', 'audio/laser-hit.wav');
-        this.scene.load.audio('nuke-exp', 'audio/nuke-exp.wav');
-        this.scene.load.audio('menu_switch', 'audio/menu_switch.mp3');
-        this.scene.load.audio('nooo', 'nooo.mp3');
+        const sounds = {
+            numkey: 'click', mining: 'mining', explosion: 'boom',
+            laser: 'laser', 'laser-hit': 'crack', 'nuke-exp': 'neutron',
+            menu_switch: 'click', nooo: 'deadship', torpedo: 'torpedo',
+            mine: 'mine',
+        };
+        for (const key of Object.keys(sounds)) {
+            this.scene.load.audio(key, 'original/sounds/' + sounds[key] + '.wav');
+        }
     }
 
     create() {

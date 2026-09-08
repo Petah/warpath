@@ -36,7 +36,7 @@ export default class Laser implements Entity{
 
 
         // audio
-        this.scene.soundManager.play("laser");
+        this.scene.soundManager.playFromLocation('laser', owner.x, owner.y);
         
     }
 

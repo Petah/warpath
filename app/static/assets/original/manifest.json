@@ -1,0 +1,447 @@
+{
+  "source_installer_sha256": "710cb77a0c0ca596a642204ea344599d673b564f38eb485c99b83913bb140bf7",
+  "files": {
+    "portrait-player.png": {
+      "source": "icons/icon-037.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "b08161c1e7cccb6cccaa5b87bfaf7754fe13c7f6cf29fc47aa94cb9594ebd638"
+    },
+    "portrait-enemy-1.png": {
+      "source": "icons/icon-038.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "8b513bc6614999a45f11d91911d180e0e941fbae5fc3deab6dbe4680a06d632a"
+    },
+    "portrait-enemy-2.png": {
+      "source": "icons/icon-039.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "a47c97ee61e6e9ca6fe4c422ffa309b0fa9c2d5ab391c0fc8869ca7d6edd02f3"
+    },
+    "portrait-enemy-3.png": {
+      "source": "icons/icon-040.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "964f030f7cd43d9fee899dd03241e06414a473ef2c72f7b27b730ddcd34b335e"
+    },
+    "icon-laser.png": {
+      "source": "icons/icon-006.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "ad143c2b94144faba4a670ee148ad4c56ef95bf92f48605ca358b201fb461c06"
+    },
+    "icon-torpedo.png": {
+      "source": "icons/icon-005.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "db767d7442e776bd25a3a3462782cdf53bf20659225a36a5c591f5932058d38a"
+    },
+    "icon-mine.png": {
+      "source": "icons/icon-007.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "f0b9ff8fed888e46d447dc7b17587f80069c7ce32d8a5e12fc11ea4a65c0ac27"
+    },
+    "icon-hot-torpedo.png": {
+      "source": "icons/icon-008.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "b40e871bb93ad8ec5b79f597dee6f39aebecea039a3a396f61953363d4253961"
+    },
+    "icon-nuclear.png": {
+      "source": "icons/icon-009.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "e53f36b5f3aeaeb880db45677d317dd80b230f3bad919ea5c7d3f10708b8edfa"
+    },
+    "icon-bio.png": {
+      "source": "icons/icon-010.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "062252836bb13dfbea94a16cbe7610e0adc8f2abea282a2be070bd7175dcbfe3"
+    },
+    "icon-mine2.png": {
+      "source": "icons/icon-017.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "6d325304fe0574910ceea974481c7a45b0cb25db2ddc592c4f7bc56f69d49397"
+    },
+    "icon-populate.png": {
+      "source": "icons/icon-026.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "b34c1eaba0872b098091cf3c922e084fb40df22b657c65dae04ac1e1e10df072"
+    },
+    "icon-invest.png": {
+      "source": "icons/icon-024.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "3c091d260857e8c6936022e388df8fb8161f897eb2e1da81b8a443c9632aa721"
+    },
+    "icon-buy.png": {
+      "source": "icons/icon-018.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "86dddf4de51b42a32bd54298dd1efcbc400eaf7d120534983040c4c676bea15d"
+    },
+    "shield.png": {
+      "source": "icons/icon-020.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "599274c234812f98b319dcf9587890a9aa46f1384e20c8d5802ea85428f3d206"
+    },
+    "icon-cloak.png": {
+      "source": "icons/icon-032.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "e0a1f9ed7b5b4ac44be5998cefbc7f05de6444a6780205faa362981821cf1a37"
+    },
+    "icon-sun.png": {
+      "source": "icons/icon-022.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "f1795fc45fddb4ba668274111b00fab242ba3fa425c93d1821a527ef8c568b1a"
+    },
+    "icon-warp.png": {
+      "source": "icons/icon-033.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "9082cdec9a3b5f2d3bf689c0ede55c1415088ae570f782a8a01630fe87b6fd26"
+    },
+    "icon-anti-bio.png": {
+      "source": "icons/icon-023.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "0e52b77ef89996ce527d08176c01c50f27c9c8523858137a3e76bd8e46afc2ee"
+    },
+    "cargo.png": {
+      "source": "icons/icon-062.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "c90bf9e7cb15712f8b6a8dbc8fb34b52aed74cac36b80337e5baf40aefd34383"
+    },
+    "energy.png": {
+      "source": "icons/icon-056.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "ce8d19002829ebf758159c0c3ceaf37f4d75f4cf47b14295be28a2c2fb296732"
+    },
+    "charge.png": {
+      "source": "icons/icon-057.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "d81abf0f4b56dfecc2b016cf93e22d3882e85dafbc61dd0c849384502dbb103a"
+    },
+    "people.png": {
+      "source": "icons/icon-026.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "b34c1eaba0872b098091cf3c922e084fb40df22b657c65dae04ac1e1e10df072"
+    },
+    "planet.png": {
+      "source": "icons/icon-023.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "0e52b77ef89996ce527d08176c01c50f27c9c8523858137a3e76bd8e46afc2ee"
+    },
+    "money.png": {
+      "source": "icons/icon-024.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "3c091d260857e8c6936022e388df8fb8161f897eb2e1da81b8a443c9632aa721"
+    },
+    "farming.png": {
+      "source": "icons/icon-065.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "aed963fb0ed60248935d20ae4723d8cf499a0189268bfbf9555e5d65a64419d2"
+    },
+    "education.png": {
+      "source": "icons/icon-029.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "34ef71498127848d62d41eafa72f12de1f98078af2e6b347eed039834ea6e111"
+    },
+    "industry.png": {
+      "source": "icons/icon-064.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "95279e9c84e66f43c95e5560b5affcbc61212e9155bd88327579c2109b2d0d1f"
+    },
+    "mining.png": {
+      "source": "icons/icon-016.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "a73f8199b9856fb44c37098e933fead2f8a91fca600cc1719cc465c3d834b3bb"
+    },
+    "spaceport.png": {
+      "source": "icons/icon-063.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "78b7bcb0007b609fbb80729e2220b18a286c90b093fd47d93075e775b1010183"
+    },
+    "ship.png": {
+      "source": "icons/icon-053.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "acb59afd67917dc97afc0ad43afd72168814c11ee157b83d0af640fb75f65baa"
+    },
+    "ship2.png": {
+      "source": "icons/icon-054.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "0da8d2c2ce802346e3c1441bdb45acbdc524b35d67579fcdaafbdbc8dbd2a7f2"
+    },
+    "ship3.png": {
+      "source": "icons/icon-055.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "75fb049f7aa8fc9bae50af35dc0529287da7cd779bd3535f8b9603294010fc0a"
+    },
+    "ship4.png": {
+      "source": "icons/icon-048.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "066022297427baf6c5c1632487c3f9903be73392a4d73d51ee1fa1e60d4d1a9d"
+    },
+    "torpedo.png": {
+      "source": "icons/icon-005.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "db767d7442e776bd25a3a3462782cdf53bf20659225a36a5c591f5932058d38a"
+    },
+    "hot-torpedo.png": {
+      "source": "icons/icon-008.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "b40e871bb93ad8ec5b79f597dee6f39aebecea039a3a396f61953363d4253961"
+    },
+    "mine.png": {
+      "source": "icons/icon-007.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "f0b9ff8fed888e46d447dc7b17587f80069c7ce32d8a5e12fc11ea4a65c0ac27"
+    },
+    "nuke.png": {
+      "source": "icons/icon-009.png",
+      "conversion": "Crop transparent padding and fit with nearest-neighbor scaling",
+      "sha256": "e53f36b5f3aeaeb880db45677d317dd80b230f3bad919ea5c7d3f10708b8edfa"
+    },
+    "cursor.cur": {
+      "source": "cursors/cursor-001.cur",
+      "conversion": "Byte-for-byte copy"
+    },
+    "planet-barren.png": {
+      "source": "bitmaps/bitmap-018.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "3285bca6081958fc954e4257d7fdc9b123385926426504b2a248c60045101cf4"
+    },
+    "planet-barren-sprite.png": {
+      "source": "bitmaps/bitmap-018.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "3285bca6081958fc954e4257d7fdc9b123385926426504b2a248c60045101cf4"
+    },
+    "planet-continental.png": {
+      "source": "bitmaps/bitmap-014.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "3136820a35c7b13d78fb55c63ff564ffed3afc984fd6d95393089e1b961eeace"
+    },
+    "planet-continental-sprite.png": {
+      "source": "bitmaps/bitmap-014.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "3136820a35c7b13d78fb55c63ff564ffed3afc984fd6d95393089e1b961eeace"
+    },
+    "planet-desert.png": {
+      "source": "bitmaps/bitmap-020.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "34926efdff41c6276e0755e27172022466f5408517d1bcb297e21467f60eebed"
+    },
+    "planet-desert-sprite.png": {
+      "source": "bitmaps/bitmap-020.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "34926efdff41c6276e0755e27172022466f5408517d1bcb297e21467f60eebed"
+    },
+    "planet-forest.png": {
+      "source": "bitmaps/bitmap-022.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "2e072267ee6f0e53c984d1a6c613e712460952b4f3da7bcb7942c586527aba9b"
+    },
+    "planet-forest-sprite.png": {
+      "source": "bitmaps/bitmap-022.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "2e072267ee6f0e53c984d1a6c613e712460952b4f3da7bcb7942c586527aba9b"
+    },
+    "planet-gaia.png": {
+      "source": "bitmaps/bitmap-024.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "fba9d31e72405ed1929a1381080afa7f258bf3118460a3cc75269f770779358d"
+    },
+    "planet-gaia-sprite.png": {
+      "source": "bitmaps/bitmap-024.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "fba9d31e72405ed1929a1381080afa7f258bf3118460a3cc75269f770779358d"
+    },
+    "planet-gasgiant.png": {
+      "source": "bitmaps/bitmap-027.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "5a40b50ebffa03965d16ef2424e632f99ffb0c1bc2806b6fccc7568b23dc90e2"
+    },
+    "planet-gasgiant-sprite.png": {
+      "source": "bitmaps/bitmap-027.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "5a40b50ebffa03965d16ef2424e632f99ffb0c1bc2806b6fccc7568b23dc90e2"
+    },
+    "planet-ice.png": {
+      "source": "bitmaps/bitmap-017.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "a2d00de9bf2b55827c7528c32ad24bfb1b1e0d19c3e78e0037ce74e526dbf0e3"
+    },
+    "planet-ice-sprite.png": {
+      "source": "bitmaps/bitmap-017.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "a2d00de9bf2b55827c7528c32ad24bfb1b1e0d19c3e78e0037ce74e526dbf0e3"
+    },
+    "planet-jungle.png": {
+      "source": "bitmaps/bitmap-025.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "8d04f8ae0571905b80369883f719474a324926a097bf188f0c38a2d99eb5fae9"
+    },
+    "planet-jungle-sprite.png": {
+      "source": "bitmaps/bitmap-025.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "8d04f8ae0571905b80369883f719474a324926a097bf188f0c38a2d99eb5fae9"
+    },
+    "planet-ocean.png": {
+      "source": "bitmaps/bitmap-015.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "add736e41da02699cdcbcfe76cc71c00b8051efe1aa61567256880751187ed3d"
+    },
+    "planet-ocean-sprite.png": {
+      "source": "bitmaps/bitmap-015.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "add736e41da02699cdcbcfe76cc71c00b8051efe1aa61567256880751187ed3d"
+    },
+    "planet-tundra.png": {
+      "source": "bitmaps/bitmap-026.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "8cde86cf8c2b3befe9deb92cac059df02696e153b7e054c3232bcb3449f1ab04"
+    },
+    "planet-tundra-sprite.png": {
+      "source": "bitmaps/bitmap-026.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "8cde86cf8c2b3befe9deb92cac059df02696e153b7e054c3232bcb3449f1ab04"
+    },
+    "planet-volcanic.png": {
+      "source": "bitmaps/bitmap-019.png",
+      "conversion": "First frame of globe projection, original palette",
+      "sha256": "f01785de5ae863dc2e36a5c26d3937c2c5b15c491bfb77886e021279a2205c18"
+    },
+    "planet-volcanic-sprite.png": {
+      "source": "bitmaps/bitmap-019.png",
+      "conversion": "19 globe-projection frames in 72x69 cells, nearest-neighbor scaling",
+      "sha256": "f01785de5ae863dc2e36a5c26d3937c2c5b15c491bfb77886e021279a2205c18"
+    },
+    "explosion-sprite.png": {
+      "source": "icons/icon-019.png",
+      "conversion": "19 expanding/fading frames adapted from the explosion icon",
+      "sha256": "a5f3230dce777aa5acad3408f79f29fac4216df9950dd79d5db2ac744a7958cf"
+    },
+    "explosion1-sprite.png": {
+      "source": "icons/icon-019.png",
+      "conversion": "65 expanding/fading frames adapted from the explosion icon",
+      "sha256": "a5f3230dce777aa5acad3408f79f29fac4216df9950dd79d5db2ac744a7958cf"
+    },
+    "explosion2-sprite.png": {
+      "source": "icons/icon-019.png",
+      "conversion": "65 expanding/fading frames adapted from the explosion icon",
+      "sha256": "a5f3230dce777aa5acad3408f79f29fac4216df9950dd79d5db2ac744a7958cf"
+    },
+    "explosion3-sprite.png": {
+      "source": "icons/icon-019.png",
+      "conversion": "65 expanding/fading frames adapted from the explosion icon",
+      "sha256": "a5f3230dce777aa5acad3408f79f29fac4216df9950dd79d5db2ac744a7958cf"
+    },
+    "explosion4-sprite.png": {
+      "source": "icons/icon-019.png",
+      "conversion": "65 expanding/fading frames adapted from the explosion icon",
+      "sha256": "a5f3230dce777aa5acad3408f79f29fac4216df9950dd79d5db2ac744a7958cf"
+    },
+    "nuclear-explosion-sprite.png": {
+      "source": "icons/icon-019.png",
+      "conversion": "16 expanding/fading frames adapted from the explosion icon",
+      "sha256": "a5f3230dce777aa5acad3408f79f29fac4216df9950dd79d5db2ac744a7958cf"
+    },
+    "sounds/antibio.wav": {
+      "source": "sounds/antibio.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/barrier.wav": {
+      "source": "sounds/barrier.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/beg.wav": {
+      "source": "sounds/beg.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/boom.wav": {
+      "source": "sounds/boom.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/boom2.wav": {
+      "source": "sounds/boom2.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/boom3.wav": {
+      "source": "sounds/boom3.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/click.wav": {
+      "source": "sounds/click.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/crack.wav": {
+      "source": "sounds/crack.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/crack2.wav": {
+      "source": "sounds/crack2.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/deadrone.wav": {
+      "source": "sounds/deadrone.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/deadship.wav": {
+      "source": "sounds/deadship.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/distress.wav": {
+      "source": "sounds/distress.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/fry.wav": {
+      "source": "sounds/fry.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/laser.wav": {
+      "source": "sounds/laser.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/mine.wav": {
+      "source": "sounds/mine.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/mining.wav": {
+      "source": "sounds/mining.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/neutron.wav": {
+      "source": "sounds/neutron.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/plague.wav": {
+      "source": "sounds/plague.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/pop.wav": {
+      "source": "sounds/pop.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/radio.wav": {
+      "source": "sounds/radio.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/scrmoff.wav": {
+      "source": "sounds/scrmoff.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/scrmon.wav": {
+      "source": "sounds/scrmon.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/static.wav": {
+      "source": "sounds/static.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/steloff.wav": {
+      "source": "sounds/steloff.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/stelon.wav": {
+      "source": "sounds/stelon.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/tommy.wav": {
+      "source": "sounds/tommy.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    },
+    "sounds/torpedo.wav": {
+      "source": "sounds/torpedo.wav",
+      "conversion": "Byte-for-byte PCM WAV copy"
+    }
+  }
+}

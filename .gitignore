@@ -31,3 +31,8 @@ public/
 # Bower stuff.
 bower_components/
 .idea
+
+# Reproducible extraction from the original Windows installer.
+original-assets/
+__pycache__/
+*.pyc

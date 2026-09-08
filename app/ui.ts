@@ -631,7 +631,7 @@ export default class UI implements Entity {
                     height: this.numberWithCommas(this.playerShip.stoppedOnPlanet.resources, 2) + '%',
                 });
                 $('#planet-inhabitance-image img').attr({
-                    src: 'assets/planets/' + this.playerShip.stoppedOnPlanet.spriteNameFor(this.playerShip.stoppedOnPlanet.planetType) + '-sprite.png',
+                    src: 'assets/original/' + this.playerShip.stoppedOnPlanet.spriteNameFor(this.playerShip.stoppedOnPlanet.planetType) + '.png',
                 });
 
                 const allegiance = this.playerShip.stoppedOnPlanet.getAllegiance(this.playerShip.team);

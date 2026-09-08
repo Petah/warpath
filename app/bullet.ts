@@ -25,6 +25,7 @@ export default class Bullet implements Entity {
 
 
         this.image = this.getSprite(bulletType, owner.x, owner.y);
+        this.scene.soundManager.playFromLocation(bulletType == BulletType.mine ? 'mine' : 'torpedo', owner.x, owner.y);
         this.startX = owner.x;
         this.startY = owner.y;
     }

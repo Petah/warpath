@@ -34,7 +34,9 @@ const game = new Phaser.Game({
     //   forceSetTimeout: false,
     // },
     // antialias: false,
-    // pixelArt: false,
+    render: {
+        pixelArt: true,
+    },
     // transparent: false,
     // clearBeforeRender: true,
     // backgroundColor: 0x000000, // black

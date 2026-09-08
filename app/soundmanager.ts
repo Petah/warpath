@@ -19,18 +19,8 @@ export default class SoundManager {
     }
     play(name: string, volume: number = null) {
         if (this.scene != null) {
-            var marker = {
-                name: 'marker',
-                start: 0,
-                config: {
-                    loop: false
-                }
-            };
-            var music = this.scene.sound.add(name)
-            music.addMarker(marker);
-            music.play('marker', {
-                delay: 0.0,
-                volume: (volume != null) ? volume : 1.0
+            this.scene.sound.play(name, {
+                volume: volume != null ? volume : 1.0
             });
         }
     }

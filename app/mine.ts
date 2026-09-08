@@ -25,6 +25,7 @@ export default class Mine implements Entity {
 
 
         this.image = this.getSprite(bulletType, owner.x, owner.y);
+        this.scene.soundManager.playFromLocation('mine', owner.x, owner.y);
         this.startX = owner.x;
         this.startY = owner.y;
     }
