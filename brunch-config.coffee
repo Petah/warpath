@@ -7,8 +7,6 @@ module.exports =
       joinTo:
         'app.js': 'app/**'
         'vendor.js': ['node_modules/**', 'vendor/**']
-    stylesheets:
-      joinTo: 'app.css'
   modules:
     autoRequire:
       'app.js': ['initialize']

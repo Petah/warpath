@@ -12,8 +12,8 @@ const game = new Phaser.Game({
     // canvas: null,
     // canvasStyle: null,
     // seed: null,
-    title: '☕️ Brunch with Phaser and TypeScript', // 'My Phaser 3 Game'
-    url: 'https://github.com/samme/brunch-phaser-typescript',
+    title: 'Warpath — Global Game Jam 2019',
+    url: 'https://github.com/Petah/ggj2019',
     version: '0.0.1',
     input: {
         keyboard: true,
