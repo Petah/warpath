@@ -11,16 +11,16 @@
     "test": "tsc --noEmit"
   },
   "dependencies": {
-    "phaser": "^3.13.0"
+    "phaser": "3.13.0"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2",
-    "brunch": "^2.10.17",
+    "brunch": "2.10.17",
     "clean-css-brunch": "^2",
     "css-brunch": "^2",
     "javascript-brunch": "^2",
-    "phaser3-docs": "git+https://github.com/photonstorm/phaser3-docs.git",
-    "typescript-brunch": "github:niku/typescript-brunch",
+    "phaser3-docs": "git+https://github.com/photonstorm/phaser3-docs.git#ff81a6d0e6afe90137cf6828cb3257581a341519",
+    "typescript-brunch": "github:niku/typescript-brunch#f512cd50a6574b6509bbbd2f9fe689145e5a7d98",
     "uglify-js-brunch": "^2"
   }
 }

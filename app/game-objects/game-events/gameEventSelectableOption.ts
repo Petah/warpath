@@ -1,4 +1,6 @@
-class GameEventSelectableOption {
+import GameEventSelectableOptionAction from './gameEventSelectableOptionAction';
+
+export default class GameEventSelectableOption {
     text: string;
     action: GameEventSelectableOptionAction;
 

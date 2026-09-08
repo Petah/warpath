@@ -1,59 +1,55 @@
-Brunch with Phaser 3 (TypeScript)
-====================
+# Warpath — Global Game Jam 2019
 
-A [Brunch](http://brunch.io) skeleton for making games with [Phaser 3](http://phaser.io/phaser3) and [TypeScript][3]. ([Why Brunch?](http://brunch.io/docs/why-brunch))
+A browser remake of [Synthetic Reality's Warpath](http://www.synthetic-reality.com/warpath.htm), built for Global Game Jam 2019 with Phaser 3.13, TypeScript, and Brunch.
 
-    brunch new <project> -s samme/brunch-phaser-typescript
+## Run locally
 
-Get started
------------
+Requires Node.js, npm, and Git (two historical development dependencies are pinned to GitHub commits). Verified with Node.js 24.19.0 and npm 11.17.0.
 
-- Install (if you don't have them):
-  - [Node.js](https://nodejs.org)
-  - [Brunch](http://brunch.io): `npm install -g brunch`
-- Run:
-  - `brunch new <project> -s samme/brunch-phaser-typescript`
-  - `npm run start` or `brunch watch --server` watches the project with continuous rebuild.
-  - `npm run build` or `brunch build --production` builds a minified project for production.
-- Make:
-  - Write your code in [app](app).
-  - Put game assets in [assets](app/static/assets).
+```sh
+npm ci
+npm start
+```
 
-Phaser
-------
+Open http://127.0.0.1:3333. The game starts immediately. The development server watches source files and rebuilds automatically; stop it with Ctrl+C. It listens on localhost only.
 
-Phaser is managed through [npm](https://docs.npmjs.com/cli/npm). The latest release is installed when you create a new project.
+Use a desktop browser and a large window; the original jam interface includes a fixed 600 × 600 game canvas and can clip on smaller screens. Browser zoom-out helps fit the whole interface.
 
-    npm view phaser version
+## Controls
 
-Update with:
+- Left-click in space to fly toward the pointer; click a planet to travel to it and stop there.
+- Right-click to fire the selected weapon toward the pointer.
+- Hold **C** while stopped at a mineable planet to mine, or use the **Mine** button.
+- Use **Colonise**, **Invest**, and **Buy** when available at a planet.
+- Select weapons and equipment with the buttons below the game canvas.
 
-    npm update
+WASD and Space are registered in the original code but do not have movement actions attached.
 
-### Other builds
+## Checks and production build
 
-See the `npm.static` entry in [brunch-config](./brunch-config.coffee).
+```sh
+npm test
+npm run build
+```
 
-Typescript
-----------
+`npm test` checks TypeScript; there is no automated gameplay test suite. The production build writes the game and assets to `public/`. Serve that directory over HTTP, for example:
 
-[Phaser 3's definitions][2] are still evolving, and there may be errors.
+```sh
+python3 -m http.server 3333 --bind 127.0.0.1 --directory public
+```
 
-Add packages
-------------
+## Project status
 
-    npm install -S <package-name>
+The original latest commit is `d711692`, dated 27 January 2019. This is a playable jam prototype with a generated galaxy, three AI opponents, mining, colonization, planet investment, trading, and weapons. There is no backend or account setup.
 
-and then [import][1] as appropriate in your code.
+The local restoration refreshes the npm lockfile, pins the original engine/build dependencies, fixes a stale population property in the unfinished event generator, and gives event types explicit module imports/exports so the production compiler handles them correctly.
 
-Configuration
--------------
+The code still has jam-era rough edges: the event generator is unfinished, the top menu has no wired actions, and the victory overlay reuses the defeat wording. The original build toolchain is deprecated and npm reports dependency warnings; a tooling modernization is separate work.
 
-- [brunch](http://brunch.io/docs/config)
-- [typescript-brunch](https://www.npmjs.com/package/typescript-brunch#brunch-config)
-- [uglify-js-brunch](https://www.npmjs.com/package/uglify-js-brunch#usage)
-  - [minify options](https://www.npmjs.com/package/uglify-js#minify-options)
+## Source layout
 
-[1]: https://www.typescriptlang.org/docs/handbook/modules.html
-[2]: https://github.com/photonstorm/phaser3-docs/tree/master/typescript
-[3]: https://www.typescriptlang.org
+- `app/scenes/default.ts`: scene setup and simulation loop.
+- `app/ship.ts`, `app/enemy.ts`, `app/planet.ts`: player, AI, and planet behavior.
+- `app/ui.ts`, `app/static/index.html`: interface and controls.
+- `app/static/assets/`: images and audio.
+- `brunch-config.coffee`: build and local server configuration.

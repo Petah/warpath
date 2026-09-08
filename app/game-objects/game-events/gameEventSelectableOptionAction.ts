@@ -1,3 +1,3 @@
-interface GameEventSelectableOptionAction {
+export default interface GameEventSelectableOptionAction {
     (): void
 }

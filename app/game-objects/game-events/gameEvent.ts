@@ -1,3 +1,5 @@
+import GameEventSelectableOption from './gameEventSelectableOption';
+
 export default class GameEvent {
     title: string;
     message: string;

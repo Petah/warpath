@@ -4,7 +4,7 @@ import Planet from "../../planet";
 
 export default class GameEventGenerator {
     colonizePlanet(ship: Ship, planet: Planet): GameEvent {
-        if(ship.speed == 0 || planet.population != 0) {
+        if(ship.speed == 0 || planet.populations.quantity != 0) {
             return null;
         }
 
