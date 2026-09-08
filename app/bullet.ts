@@ -63,10 +63,11 @@ export default class Bullet implements Entity {
         this.image.setVelocityX(vx);
         this.image.setVelocityY(vy);
 
-        const distance = GM.pointDistance(this.owner.x, this.owner.y, this.x, this.y);
+        const distance = GM.pointDistance(this.startX, this.startY, this.x, this.y);
         const maxDistance = GM.pointDistance(this.startX, this.startY, this.dx, this.dy);
         if (distance >= maxDistance) {
             this.blast();
+            return;
         }
 
         for (const entity of this.scene.entities) {

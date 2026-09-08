@@ -1,3 +1,4 @@
+import Classic from '../classic';
 import Ship from "../ship";
 import Assets from "../assets";
 import Level from "../level";
@@ -14,6 +15,8 @@ import Ork from "../game-objects/entity-types/planet-related-objects/populationO
 
 export default class DefaultScene extends Phaser.Scene {
 
+    public classic: Classic;
+    private accumulator = 0;
     public playerShip: Ship;
     public enemyShips: Ship[] = [];
     public level: Level;
@@ -37,6 +40,7 @@ export default class DefaultScene extends Phaser.Scene {
         console.debug('init', data, this);
         this.soundManager = new SoundManager(this);
         this.ui = new UI(this);
+        this.classic = new Classic(this);
     }
 
     preload() {
@@ -61,12 +65,13 @@ export default class DefaultScene extends Phaser.Scene {
         this.stars = new Stars(this);
         this.addEntity(this.stars);
 
-        const maxEnemyTeams = 3;
+        const options = Classic.options();
+        const maxEnemyTeams = options.enemies;
 
         // Make the teams
-        this.playerTeam = new Team(this, 0x00FF00, true, 1);
+        this.playerTeam = new Team(this, options.path === "green" ? 0x00ff00 : 0xff0000, true, 1);
         for (let i = 0; i < maxEnemyTeams; i++) {
-            const color = Team.randomColor();
+            const color = options.path === "green" ? 0xff0000 : 0x00ff00;
             const enemyTeam = new Team(this, color, false, i + 2);
             this.enemyTeams.push(enemyTeam);
 
@@ -76,7 +81,7 @@ export default class DefaultScene extends Phaser.Scene {
         const human = new Human();
         const ork = new Ork();
         let playerHomePlanet = Planet.getHabitablePlanetFromLevel(this.level, 1);
-        playerHomePlanet.populations.quantity = 1000;
+        playerHomePlanet.populations.quantity = 2500;
         playerHomePlanet.populations.species = human;
         playerHomePlanet.team = this.playerTeam;
         playerHomePlanet.education = 0.5 + (Math.random() * 0.5);
@@ -111,7 +116,7 @@ export default class DefaultScene extends Phaser.Scene {
         }
 
         // Spawn the ships
-        this.playerShip = new Ship(this, this.playerTeam, playerHomePlanet, human, 'ship');
+        this.playerShip = new Ship(this, this.playerTeam, playerHomePlanet, human, ['ship','ship2','ship3','ship4'][options.ship]);
         this.ui.playerShip = this.playerShip;
         this.addEntity(this.playerShip);
         playerHomePlanet.draw();
@@ -125,19 +130,38 @@ export default class DefaultScene extends Phaser.Scene {
             enemyHomePlanets[i].draw();
         }
 
+        // Half of the remaining worlds start neutral, as described in the manual.
+        for (let i = 0; i < this.level.planets.length; i++) {
+            const planet = this.level.planets[i];
+            if (!planet.team && i % 2 === 0) {
+                planet.populations.species = human;
+                planet.populations.quantity = 500 + Math.random() * 1500;
+                planet.populations.setAllegianceForTeam(this.playerTeam, 50);
+                planet.spacePort = 0.2; planet.industry = 0.2; planet.education = 0.2;
+            }
+        }
         this.ui.drawMiniMap();
         this.ui.slowUpdate();
 
         this.physics.world.setBounds(0, 0, this.level.width, this.level.height);
         this.cameras.main.setBounds(0, 0, this.level.width, this.level.height);
-        this.cameras.main.startFollow(this.playerShip.image, true, 0.05, 0.05);
+        this.cameras.main.startFollow(this.playerShip.image, true, 1, 1);
+        this.classic.ready();
 
 
 
 
     }
 
-    update() {
+    update(time: number, delta: number) {
+        this.accumulator += Math.min(delta, 100);
+        while (this.accumulator >= 1000 / 60) {
+            this.accumulator -= 1000 / 60;
+            this.tick();
+        }
+    }
+
+    private tick() {
         this.numUpdates++;
         let slowUpdate = false;
         if (this.numUpdates % 100 === 0) {
@@ -145,7 +169,7 @@ export default class DefaultScene extends Phaser.Scene {
             slowUpdate = true;
             this.ui.slowUpdate();
         }
-        for (const entity of this.entities) {
+        for (const entity of this.entities.slice()) {
             entity.update();
             if (slowUpdate) {
                 entity.slowUpdate();
@@ -153,6 +177,7 @@ export default class DefaultScene extends Phaser.Scene {
         }
         if (this.numUpdates % 3 === 0) {
             this.ui.updateUi();
+            this.classic.update();
         }
     }
 
@@ -161,7 +186,8 @@ export default class DefaultScene extends Phaser.Scene {
     }
 
     removeEntity(entity: Entity) {
-        this.entities.splice(this.entities.indexOf(entity), 1);
+        const index = this.entities.indexOf(entity);
+        if (index >= 0) this.entities.splice(index, 1);
     }
 
 

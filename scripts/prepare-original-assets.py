@@ -15,7 +15,10 @@ ICONS = {
     'icon-invest': 24, 'icon-buy': 18, 'shield': 20, 'icon-cloak': 32,
     'icon-sun': 22, 'icon-warp': 33, 'icon-anti-bio': 23, 'cargo': 62,
     'energy': 56, 'charge': 57, 'people': 26, 'planet': 23, 'money': 24,
-    'farming': 65, 'education': 29, 'industry': 64, 'mining': 16, 'spaceport': 63,
+    'defence': 66, 'scan': 11, 'radio': 16, 'guide': 29, 'report': 28, 'equipment': 27,
+    'speed-up': 13, 'speed-down': 14, 'stop': 15, 'reverse': 25, 'sector-view': 32, 'follow': 33,
+    'flag-green': 59, 'flag-red': 60, 'stealth': 21,
+    'farming': 65, 'education': 61, 'industry': 64, 'mining': 62, 'spaceport': 63,
 }
 # Resource IDs describe source artwork, not planet classes in the 1994 game.
 PLANETS = {'barren': 18, 'continental': 14, 'desert': 20, 'forest': 22,
@@ -43,6 +46,8 @@ def prepare(source, output):
         result.alpha_composite(image, ((size[0] - image.width) // 2, (size[1] - image.height) // 2))
         return result
 
+    for i in range(7):
+        ICONS['empire-' + str(i)] = 37 + i
     for name, rid in ICONS.items():
         save(name + '.png', icon(rid), f'icons/icon-{rid:03d}.png', 'Original RGBA icon preview; no resizing')
     for name, rid, size in [('ship', 53, (50, 43)), ('ship2', 54, (50, 43)),

@@ -52,6 +52,7 @@ export default class Items {
         this.items.push(new Item({
             key: 'bio',
             name: 'Plague Bomb',
+            fireCost: 0.15,
             icon: 'assets/original/icon-bio.png',
             description: 'The galactic council has restricted this highly toxic and contagious anti-planetary weapon from sale to the general public. However, a few of them are registered under a pre-existing "grandfathered" clause and can be purchased here.',
             price: 200000,
@@ -82,35 +83,35 @@ export default class Items {
             key: 'shield',
             name: 'Shield',
             icon: 'assets/original/shield.png',
-            description: '@todo',
+            description: 'Adds a protective shield layer. Mining and stealth temporarily disable defensive shields.',
             price: 25000,
         }));
         this.items.push(new Item({
             key: 'cloak',
             name: 'Cloak',
-            icon: 'assets/original/icon-cloak.png',
-            description: '@todo',
+            icon: 'assets/original/stealth.png',
+            description: 'Hide from enemy targeting while consuming charge. Defensive shields are disabled while cloaked.',
             price: 53000,
         }));
         this.items.push(new Item({
             key: 'disrupter',
             name: 'Disrupter',
             icon: 'assets/original/icon-sun.png',
-            description: '@todo',
+            description: 'While active, weakens all shields in the current sector, including your own. Consumes charge.',
             price: 147000,
         }));
         this.items.push(new Item({
             key: 'warp-drive',
             name: 'Warp Drive',
             icon: 'assets/original/icon-warp.png',
-            description: '@todo',
+            description: 'Install once, then engage Warp and click the galaxy map to jump. Each jump uses one unit of charge.',
             price: 1500000,
         }));
         this.items.push(new Item({
             key: 'anti-bio',
             name: 'Anti Plague Sterilization Beam',
             icon: 'assets/original/icon-anti-bio.png',
-            description: '@todo',
+            description: 'One crystal sterilizes the infected planet you are orbiting.',
             price: 27000,
         }));
     }

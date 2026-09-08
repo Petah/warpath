@@ -54,10 +54,11 @@ export default class Laser implements Entity{
         this.graphics.clear();
         this.graphics.strokeLineShape(this.line);
 
-        const distance = GM.pointDistance(this.owner.x, this.owner.y, this.x, this.y);
+        const distance = GM.pointDistance(this.startX, this.startY, this.x, this.y);
         const maxDistance = GM.pointDistance(this.startX, this.startY, this.dx, this.dy);
         if (distance >= maxDistance) {
             this.blast();
+            return;
         }
         
         for (const entity of this.scene.entities) {
@@ -65,6 +66,7 @@ export default class Laser implements Entity{
                 const distance = GM.pointDistance(this.x, this.y, entity.x, entity.y);
                 if (distance < 25) {
                     this.blast();
+                    return;
                 }
             }
             if (entity instanceof Planet && entity.species != this.owner.species) {
@@ -83,6 +85,7 @@ export default class Laser implements Entity{
         const blast = new Blast(this.scene, this.x, this.y, this.direction, 0.19, "explosion1", "explosion1-animation", 10);
         this.scene.addEntity(blast);
         this.scene.soundManager.playFromLocation('laser-hit', this.x, this.y);
+        this.image.destroy();
     }
     
     slowUpdate() {

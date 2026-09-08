@@ -88,14 +88,9 @@ export default class Population {
         if (amount < 0 || amount > 100) {
             throw new Error('Invalid amount');
         }
-        this.allegiances[team.teamNumber] = amount;
-        if (this.scene.playerTeam != team) {
-            this.allegiances[this.scene.playerTeam.teamNumber] = 100 - amount;
-        }
-        for (const enemyTeam of this.scene.enemyTeams) {
-            if (enemyTeam != team) {
-                this.allegiances[enemyTeam.teamNumber] = 100 - amount;
-            }
+        const teams = [this.scene.playerTeam].concat(this.scene.enemyTeams);
+        for (const other of teams) {
+            this.allegiances[other.teamNumber] = other.color === team.color ? amount : 100 - amount;
         }
     }
 }

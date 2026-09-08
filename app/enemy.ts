@@ -124,9 +124,9 @@ export default class Enemy extends Ship {
 
         if (this.reenteringBounds
             && this.x >= insetDistance
-            || this.x <= this.scene.level.width - insetDistance
-            || this.y >= insetDistance
-            || this.y <= this.scene.level.height - insetDistance) {
+            && this.x <= this.scene.level.width - insetDistance
+            && this.y >= insetDistance
+            && this.y <= this.scene.level.height - insetDistance) {
             this.reenteringBounds = false;
         }
 
@@ -214,7 +214,7 @@ export default class Enemy extends Ship {
                         }
                     }
                 }
-                if (closest) {
+                if (closest.planet) {
                     this.direction = closest.direction + (Math.random() * 50 - 25);
                     this.speed = this.maxSpeed;
                     if (Math.random() < 0.04) {
@@ -296,7 +296,7 @@ export default class Enemy extends Ship {
                     }
                 }
             }
-            if (closest) {
+            if (closest.planet) {
                 if (closest.distance < 30) {
                     this.speed = 0;
 
@@ -376,7 +376,7 @@ export default class Enemy extends Ship {
             ship: null,
         };
         for (const ship of this.scene.entities) {
-            if (ship instanceof Ship && ship.species != this.species && ship.dead <= 0) {
+            if (ship instanceof Ship && ship.species != this.species && !ship.cloaked && ship.dead <= 0) {
                 const distance = GM.pointDistance(this.x, this.y, ship.x, ship.y);
                 if (!closest.ship || closest.distance > distance) {
                     closest.ship = ship;

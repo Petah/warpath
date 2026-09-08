@@ -32,14 +32,14 @@ export default class Blast implements Entity {
                 const distance = GM.pointDistance(this.x, this.y, entity.x, entity.y);
                 if (distance < 25) {
                     entity.damage(this.damage, this.blastDirection);
-                    return;
+                    continue;
                 }
             }
             if (entity instanceof Planet) {
                 const distance = GM.pointDistance(this.x, this.y, entity.x, entity.y);
                 if (distance < 25) {
                     entity.damage(this.damage, this.blastDirection);
-                    return;
+                    continue;
                 }
             }
         }

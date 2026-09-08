@@ -126,15 +126,90 @@
       "conversion": "Original RGBA icon preview; no resizing",
       "sha256": "3c091d260857e8c6936022e388df8fb8161f897eb2e1da81b8a443c9632aa721"
     },
+    "defence.png": {
+      "source": "icons/icon-066.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "681d579fc2d0ffa000229e4f3850af3baf1e962fb088c6fcbbad05e7342f4a40"
+    },
+    "scan.png": {
+      "source": "icons/icon-011.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "7cd87e164e183ac3816f5b4a078219065d40ea6e277e14ba7f220b7c411c6a0a"
+    },
+    "radio.png": {
+      "source": "icons/icon-016.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "a73f8199b9856fb44c37098e933fead2f8a91fca600cc1719cc465c3d834b3bb"
+    },
+    "guide.png": {
+      "source": "icons/icon-029.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "34ef71498127848d62d41eafa72f12de1f98078af2e6b347eed039834ea6e111"
+    },
+    "report.png": {
+      "source": "icons/icon-028.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "d6f1ef2790178d7a0ee4173ecd6854fb4d10d3708eb56330493e23a77acee687"
+    },
+    "equipment.png": {
+      "source": "icons/icon-027.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "b987c51bc4db7ab2cb4b30435510131da789ce6e57ab2f60eeb414543e595339"
+    },
+    "speed-up.png": {
+      "source": "icons/icon-013.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "bf522bbbff2f54f8684430c05fed7ef9dfa8276f39b6a59a2df6726d0ae24e33"
+    },
+    "speed-down.png": {
+      "source": "icons/icon-014.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "f62e7d504fd4fbcdff8eeb40d46c60f6800e2a0e920856bad5fabe07ca1a56f9"
+    },
+    "stop.png": {
+      "source": "icons/icon-015.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "d8f93cf41b570db781486fffe3adc5e9a720d36ee4970ed139c01d67ff0ccc94"
+    },
+    "reverse.png": {
+      "source": "icons/icon-025.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "acb766fe57a55aba8f54771a5249735105572e749465ff83f98ff55501665af1"
+    },
+    "sector-view.png": {
+      "source": "icons/icon-032.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "e0a1f9ed7b5b4ac44be5998cefbc7f05de6444a6780205faa362981821cf1a37"
+    },
+    "follow.png": {
+      "source": "icons/icon-033.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "9082cdec9a3b5f2d3bf689c0ede55c1415088ae570f782a8a01630fe87b6fd26"
+    },
+    "flag-green.png": {
+      "source": "icons/icon-059.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "d73ab9434fccce0ff40e96152868db8340b32b69fb282a3850ec37a65228cdad"
+    },
+    "flag-red.png": {
+      "source": "icons/icon-060.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "35c054be8191a2cc1479a8859f6d53b0571cfb7689240e44dabc13ade8cfe5b8"
+    },
+    "stealth.png": {
+      "source": "icons/icon-021.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "fbd6c29ccf8a6765904e3d00baeca5878ef684b6d5c6a1d8ce98562c6de7630f"
+    },
     "farming.png": {
       "source": "icons/icon-065.png",
       "conversion": "Original RGBA icon preview; no resizing",
       "sha256": "aed963fb0ed60248935d20ae4723d8cf499a0189268bfbf9555e5d65a64419d2"
     },
     "education.png": {
-      "source": "icons/icon-029.png",
+      "source": "icons/icon-061.png",
       "conversion": "Original RGBA icon preview; no resizing",
-      "sha256": "34ef71498127848d62d41eafa72f12de1f98078af2e6b347eed039834ea6e111"
+      "sha256": "07c80ebc11cc31bd93de51a5f3b25fc886691f5258d0091f28bdddc4e28a0790"
     },
     "industry.png": {
       "source": "icons/icon-064.png",
@@ -142,14 +217,49 @@
       "sha256": "95279e9c84e66f43c95e5560b5affcbc61212e9155bd88327579c2109b2d0d1f"
     },
     "mining.png": {
-      "source": "icons/icon-016.png",
+      "source": "icons/icon-062.png",
       "conversion": "Original RGBA icon preview; no resizing",
-      "sha256": "a73f8199b9856fb44c37098e933fead2f8a91fca600cc1719cc465c3d834b3bb"
+      "sha256": "c90bf9e7cb15712f8b6a8dbc8fb34b52aed74cac36b80337e5baf40aefd34383"
     },
     "spaceport.png": {
       "source": "icons/icon-063.png",
       "conversion": "Original RGBA icon preview; no resizing",
       "sha256": "78b7bcb0007b609fbb80729e2220b18a286c90b093fd47d93075e775b1010183"
+    },
+    "empire-0.png": {
+      "source": "icons/icon-037.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "b08161c1e7cccb6cccaa5b87bfaf7754fe13c7f6cf29fc47aa94cb9594ebd638"
+    },
+    "empire-1.png": {
+      "source": "icons/icon-038.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "8b513bc6614999a45f11d91911d180e0e941fbae5fc3deab6dbe4680a06d632a"
+    },
+    "empire-2.png": {
+      "source": "icons/icon-039.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "a47c97ee61e6e9ca6fe4c422ffa309b0fa9c2d5ab391c0fc8869ca7d6edd02f3"
+    },
+    "empire-3.png": {
+      "source": "icons/icon-040.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "964f030f7cd43d9fee899dd03241e06414a473ef2c72f7b27b730ddcd34b335e"
+    },
+    "empire-4.png": {
+      "source": "icons/icon-041.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "425989eb4dac2af1e2012ad749dfab8c9c06d0b714521dedf6c57c1b0deb4c06"
+    },
+    "empire-5.png": {
+      "source": "icons/icon-042.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "2820f336b67bf2fe1701943f545a518f2cda888cf505542d230e70963f951f51"
+    },
+    "empire-6.png": {
+      "source": "icons/icon-043.png",
+      "conversion": "Original RGBA icon preview; no resizing",
+      "sha256": "7ab2068f9af2ff8c28e7991ea6bba590838250c7d2b0bae5eaacb4388034008c"
     },
     "ship.png": {
       "source": "icons/icon-053.png",

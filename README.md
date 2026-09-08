@@ -11,19 +11,24 @@ npm ci
 npm start
 ```
 
-Open http://127.0.0.1:3333. The game starts immediately. The development server watches source files and rebuilds automatically; stop it with Ctrl+C. It listens on localhost only.
+Open http://127.0.0.1:3333. The solo registration dialog lets you choose a captain, Path, empire portrait, ship, and one to three opponents. The development server watches source files and rebuilds automatically; stop it with Ctrl+C. It listens on localhost only.
 
-Use a desktop browser and a large window; the original jam interface includes a fixed 600 × 600 game canvas and can clip on smaller screens. Browser zoom-out helps fit the whole interface.
+Use a desktop browser with a mouse. The cockpit scales to fit the window (verified at 800 × 600 and 1440 × 1000), while the simulation retains a 600 × 600 sector view. File → Fullscreen expands it.
 
-## Controls
+## Controls and the solo game
 
-- Left-click in space to fly toward the pointer; click a planet to travel to it and stop there.
-- Right-click to fire the selected weapon toward the pointer.
-- Hold **C** while stopped at a mineable planet to mine, or use the **Mine** button.
-- Use **Colonise**, **Invest**, and **Buy** when available at a planet.
-- Select weapons and equipment with the buttons below the game canvas.
+- Left-click the sector view or galaxy map to set a course. Flight continues until you stop or reach a planet you specifically selected.
+- Right-click to fire at a point. **1–6** select weapons; the last round in your inventory is usable.
+- **+ / −** or **Up / Down** change speed by one notch; **Space** stops; **R** reverses course. Toolbar buttons provide the same actions.
+- Hold **C** or press **Mine** in orbit around an uninhabited planet. Mining temporarily lowers your shields. Return to a friendly or neutral inhabited planet to sell ore.
+- Friendly planets provide colonists and refuel up to their spaceport capacity. Colonizing requires at least 200 colonists. Neutral and hostile worlds do not refuel you.
+- Buy pods and equipment, then invest in colonies or neutral worlds. Investment raises development and allegiance. The broker lets you change the investment amount.
+- The scanner reveals sectors as you enter them and records planetary allegiance after orbit. **G** opens the planetary guide; selecting a world engages autopilot. Click a captain portrait to watch that ship, or use the camera buttons for ship/sector views.
+- Stealth hides your ship from AI targeting but disables defensive shields and firing. Disrupters weaken all shields in the sector. Warp is installed equipment: engage it, then click the map; each jump consumes charge rather than the drive.
+- Plague bombs infect planets; orbit can spread infection. A cure crystal sterilizes the current sector. Energy barriers damage ships crossing quadrant boundaries. You have three ships; losing the last ends the game.
+- **P** pauses; **Escape** closes a dialog or toggles pause; **F1** opens help. Dialogs and hidden tabs pause automatically. Sound and registration preferences persist locally; game progress does not.
 
-WASD and Space are registered in the original code but do not have movement actions attached.
+The classic cockpit includes working File/Actions/Windows/Tutorial/Help menus, a radio log, planet scan and guide, empire report, inventory, and a broker dialog modeled on the supplied original screenshots. Radio messages explain transactions and report low-resource worlds. The simulation advances at 60 logical ticks per second independently of display refresh rate.
 
 ## Checks and production build
 
@@ -32,7 +37,7 @@ npm test
 npm run build
 ```
 
-`npm test` checks TypeScript; there is no automated gameplay test suite. GitHub Actions runs a clean install, type check, and production build on pushes and pull requests using Node.js 24. The production build writes the game and assets to `public/`. Serve that directory over HTTP, for example:
+`npm test` checks TypeScript and runs eleven regression tests covering credit limits, upgrades, docking/refuelling, ammunition, stealth/shields, warp, investment, shared Path allegiance, final-ship loss, and stopping. GitHub Actions runs a clean install, type check, and production build on pushes and pull requests using Node.js 24. The production build writes the game and assets to `public/`. Serve that directory over HTTP, for example:
 
 ```sh
 python3 -m http.server 3333 --bind 127.0.0.1 --directory public
@@ -44,7 +49,9 @@ The original latest commit is `d711692`, dated 27 January 2019. This is a playab
 
 The local restoration refreshes the npm lockfile, pins the original engine/build dependencies, fixes a stale population property in the unfinished event generator, and gives event types explicit module imports/exports so the production compiler handles them correctly.
 
-The code still has jam-era rough edges: the event generator is unfinished and the top menu has no wired actions. The original build toolchain is deprecated and npm reports dependency warnings; a tooling modernization is separate work. Compatible dependency fixes have been applied, and unused CSS build plugins removed (the interface uses inline CSS). TypeScript is an explicit development dependency.
+The classic solo pass follows the supplied screenshots and the 1994–1997 help manual for navigation, exploration, trading, colonization, allegiance, and equipment. It remains a remake, not emulation: full seven-empire diplomacy, banking/loans, finite shop stock, modem/network multiplayer, and saved games are not implemented. Ship and planet stats, damage, and economic rates are approximations, and the old scripted-event generator remains unfinished.
+
+The original build toolchain is deprecated and npm reports dependency warnings; a tooling modernization is separate work. Compatible dependency fixes have been applied, and unused CSS build plugins removed (styles are served directly from the static directory). TypeScript is an explicit development dependency.
 
 Use `npm audit` to inspect remaining dependency advisories. Do not run `npm audit fix --force` blindly: it proposes upgrading Brunch to a new major version whose package is now an unrelated project. A future build-tool migration should preserve Phaser 3.13 until gameplay compatibility has been tested separately.
 
@@ -52,7 +59,8 @@ Use `npm audit` to inspect remaining dependency advisories. Do not run `npm audi
 
 - `app/scenes/default.ts`: scene setup and simulation loop.
 - `app/ship.ts`, `app/enemy.ts`, `app/planet.ts`: player, AI, and planet behavior.
-- `app/ui.ts`, `app/static/index.html`: interface and controls.
+- `app/ui.ts`, `app/classic.ts`, `app/static/index.html`, `app/static/classic.css`: cockpit, menus, registration, and controls.
+- `tests/gameplay.cjs`: regression tests for the ship and economy rules.
 - `app/static/assets/`: images and audio.
 - `brunch-config.coffee`: build and local server configuration.
 
@@ -79,4 +87,8 @@ python3 scripts/prepare-original-assets.py
 
 The conversion script maps resource IDs to portraits, ships, shop/weapon icons, and equipment; its output manifest records the source of each asset. Original bitmaps are projected onto rotating globes for the remake's eleven planet classes, and the original explosion icon is expanded/faded into compatible animation sheets. These animations are adaptations, not recovered animation sequences. Pixel art uses nearest-neighbor scaling, and the planet information panel uses a single preview frame.
 
-Laser, impact, torpedo, mine, mining, explosion, neutron, menu, and defeat effects use original WAVs. One-shot audio is released after playback, and laser firing plays once per shot. The installer has no music track, so the jam soundtrack is no longer played. Existing CSS panels, starfield, HUD gauges, and simple beam/particle helpers remain. `warpath.hlp` matches the help file preserved from this installer byte for byte.
+Laser, impact, torpedo, mine, mining, explosion, neutron, menu, and defeat effects use original WAVs. One-shot audio is released after playback, and laser firing plays once per shot. The installer has no music track, so the jam soundtrack is no longer played. The classic cockpit uses CSS panels and gauges, a lightweight starfield, and simple beam/particle helpers. `warpath.hlp` matches the help file preserved from this installer byte for byte.
+
+## Original references
+
+The layout was checked against the files in `screenshots/`, including the main cockpit, solo registration, and McDOW Investment Brokers. `warpath.hlp` was decompiled locally using [HelpDeco](https://github.com/pmachapman/helpdeco); its navigation, galaxy map, energy, colonies, investment, and weapons topics informed the rules above. HelpDeco reported unresolved legacy browse links, but the text and embedded illustrations were readable. The help file, installer, and supplied screenshots are reference material and are not needed to build or run the game.

@@ -217,7 +217,7 @@ export default class UI implements Entity {
         this.time = $('#time');
         this.timeImage = $('#time-seg img');
 
-        this.gauge = $('.gauge-center');
+        this.gauge = $('.gauge');
         this.needle = $('.needle');
         this.mineButton = $('#mine');
         this.populateButton = $('#populate');
@@ -254,12 +254,14 @@ export default class UI implements Entity {
             this.playMenuAudio();
             this.playerShip.sell();
             this.modalWrapper.hide();
+        if (this.scene.classic) this.scene.classic.pause('trade', false);
         });
 
         $('#sell-1000').addEventListener('click', () => {
             this.playMenuAudio();
             this.playerShip.sell(1);
             this.modalWrapper.hide();
+        if (this.scene.classic) this.scene.classic.pause('trade', false);
         });
 
         this.mineButton.addEventListener('click', () => {
@@ -280,14 +282,14 @@ export default class UI implements Entity {
         });
 
         this.investButton.addEventListener('click', () => {
-            if (this.playerShip && this.playerShip.stoppedOnPlanet && this.playerShip.stoppedOnPlanet.canInvest) {
+            if (this.playerShip && this.playerShip.stoppedOnPlanet && this.playerShip.canInvest()) {
                 this.showModal('modal-invest');
                 this.updateInvestValues();
             }
         });
 
         this.buyButton.addEventListener('click', () => {
-            if (this.playerShip && this.playerShip.stoppedOnPlanet && this.playerShip.stoppedOnPlanet.canSell) {
+            if (this.playerShip && this.playerShip.stoppedOnPlanet && this.playerShip.canBuy()) {
                 this.showItem(this.currentItem);
                 this.showModal('modal-buy');
                 this.toggleBuyButtons();
@@ -319,14 +321,20 @@ export default class UI implements Entity {
         });
 
         this.itemShieldButton.addEventListener('click', () => {
+            this.playerShip.shieldsEnabled = !this.playerShip.shieldsEnabled;
+            this.itemShieldButton.setActive(this.playerShip.shieldsEnabled);
             this.playMenuAudio();
         });
 
         this.itemCloakButton.addEventListener('click', () => {
+            this.playerShip.toggleEquipment('cloak');
+            this.itemCloakButton.setActive(this.playerShip.cloaked);
             this.playMenuAudio();
         });
 
         this.itemDisrupterButton.addEventListener('click', () => {
+            this.playerShip.toggleEquipment('disrupter');
+            this.itemDisrupterButton.setActive(this.playerShip.disrupting);
             this.playMenuAudio();
         });
 
@@ -340,6 +348,7 @@ export default class UI implements Entity {
         });
 
         this.itemPlagueCureButton.addEventListener('click', () => {
+            this.playerShip.curePlague();
             this.playMenuAudio();
         });
 
@@ -427,23 +436,12 @@ export default class UI implements Entity {
             this.playerShip.invest('agriculture');
             this.updateInvestValues();
         });
-        $('#minimap').addEventListener('click', (event) => {            
-
-            const warpCharge = 1.0;
-
-            const isButtonActive = this.itemWarpButton.getActive();
-            const hasEnoughCharge = this.playerShip.charge >= warpCharge;
-            const hasWarpItem = this.playerShip.items['warp-drive'].amount > 0;
-
-            if (isButtonActive && hasEnoughCharge && hasWarpItem) {
-                this.playerShip.items['warp-drive'].amount--;
-                this.playerShip.charge -= warpCharge;
-
-                this.playerShip.warp(
-                    event.offsetX / 208 * this.scene.level.width,
-                    event.offsetY / 208 * this.scene.level.height
-                );
-            }
+        $('#minimap').addEventListener('click', (event) => {
+            const bounds = document.getElementById('minimap').getBoundingClientRect();
+            const x = (event.clientX - bounds.left) / bounds.width * this.scene.level.width;
+            const y = (event.clientY - bounds.top) / bounds.height * this.scene.level.height;
+            if (this.itemWarpButton.getActive()) this.playerShip.warp(x, y);
+            else this.playerShip.navigate(x, y);
         });
     }
 
@@ -486,7 +484,7 @@ export default class UI implements Entity {
         $('#item-name').text(item.name);
         $('#item-description').text(item.description);
         $('#item-price').text(this.numberWithCommas(item.price, 0));
-        $('#item-quantity').text('100');
+        $('#item-quantity').text('Available');
         $('#item-icon').attr({
             src: item.icon,
         });
@@ -494,6 +492,9 @@ export default class UI implements Entity {
 
     public showModalSell() {
         const tons = Math.round(this.playerShip.cargo * 1000);
+        const paragraphs = document.querySelectorAll('#modal-sell .modal-body > p');
+        paragraphs[0].textContent = 'Trading at ' + this.playerShip.stoppedOnPlanet.name;
+        paragraphs[1].textContent = 'The trading post offers ' + this.numberWithCommas(this.playerShip.getSellAmount(), 0) + ' credits for ' + tons + ' tons.';
         if (tons > 1000) {
             $('#sell-1000-tons').show();
             $('#sell-1000-tons-amount').text(this.numberWithCommas(this.playerShip.getSellAmount(1), 0));
@@ -516,12 +517,14 @@ export default class UI implements Entity {
         const el = $('#' + id);
         this.modalWrapper.show();
         el.show();
+        this.scene.classic.pause('trade', true);
 
         this.playMenuAudio();
     }
 
-    private hideModals() {
+    public hideModals() {
         this.modalWrapper.hide();
+        if (this.scene.classic) this.scene.classic.pause('trade', false);
         $('#modal-sell').hide();
         $('#modal-buy').hide();
         $('#modal-invest').hide();
@@ -619,7 +622,7 @@ export default class UI implements Entity {
 
             if (this.playerShip.stoppedOnPlanet) {
                 this.planetName.text(this.playerShip.stoppedOnPlanet.name);
-                this.planetInhabitance.text('Uninhabited');
+                this.planetInhabitance.text(!this.playerShip.stoppedOnPlanet.getTotalPopulationConsumed() ? 'Uninhabited' : this.playerShip.stoppedOnPlanet.getAllegiance(this.playerShip.team) > 66 ? 'Friendly planet' : this.playerShip.stoppedOnPlanet.getAllegiance(this.playerShip.team) < 34 ? 'Hostile planet' : 'Neutral planet');
                 this.planetPopulation.text(this.numberWithCommas(this.playerShip.stoppedOnPlanet.getTotalPopulationConsumed(), 0));
                 this.planetSickness.style({
                     height: this.numberWithCommas(this.playerShip.stoppedOnPlanet.sickness, 2) + '%',
@@ -635,6 +638,9 @@ export default class UI implements Entity {
                 });
 
                 const allegiance = this.playerShip.stoppedOnPlanet.getAllegiance(this.playerShip.team);
+                const ours = this.playerShip.team.color === 0x00ff00 ? '#20a43a' : '#da3028';
+                const theirs = this.playerShip.team.color === 0x00ff00 ? '#da3028' : '#20a43a';
+                this.gauge.style({ background: allegiance === null ? '#999' : 'conic-gradient(' + ours + ' 0 ' + allegiance + '%, ' + theirs + ' 0)' });
                 if (allegiance === null) {
                     this.gauge.attr({
                         'data-before': 'N/A',
@@ -657,18 +663,12 @@ export default class UI implements Entity {
                 left: (this.playerShip.x / this.scene.level.width * 100) + '%',
                 top: (this.playerShip.y / this.scene.level.height * 100) + '%',
             });
-            this.minimapShip2.style({
-                left: (this.enemyShip0.x / this.scene.level.width * 100) + '%',
-                top: (this.enemyShip0.y / this.scene.level.height * 100) + '%',
-            });
-            this.minimapShip3.style({
-                left: (this.enemyShip1.x / this.scene.level.width * 100) + '%',
-                top: (this.enemyShip1.y / this.scene.level.height * 100) + '%',
-            });
-            this.minimapShip4.style({
-                left: (this.enemyShip2.x / this.scene.level.width * 100) + '%',
-                top: (this.enemyShip2.y / this.scene.level.height * 100) + '%',
-            });
+            for (let i = 0; i < 3; i++) {
+                const marker = document.getElementById('minimap-ship-' + (i + 2));
+                const ship = this.scene.enemyShips[i];
+                marker.style.display = ship && this.scene.classic.canSeeEnemy(ship) ? '' : 'none';
+                if (ship) { marker.style.left = ship.x / this.scene.level.width * 100 + '%'; marker.style.top = ship.y / this.scene.level.height * 100 + '%'; }
+            }
         }
     }
 
@@ -693,11 +693,11 @@ export default class UI implements Entity {
         let totalOrk = 0;
         let totalOrkPlanet = 0;
         for (let planet of this.scene.level.planets) {
-            if (planet.populations.species && planet.populations.species.speciesName == 'Human') {
+            if (planet.getAllegiance(this.scene.playerTeam) > 66) {
                 totalHuman += planet.getTotalPopulationConsumed();
                 totalHumanPlanet++;
             }
-            if (planet.populations.species && planet.populations.species.speciesName == 'Ork') {
+            if (planet.getTotalPopulationConsumed() > 0 && planet.getAllegiance(this.scene.playerTeam) < 34) {
                 totalOrk += planet.getTotalPopulationConsumed();
                 totalOrkPlanet++;
             }
@@ -711,17 +711,20 @@ export default class UI implements Entity {
     }
 
     public lose() {
+        this.hideModals();
         $('#splash-lose').show();
         this.scene.soundManager.play('nooo');
         this.scene.game.scene.stop('default');
     }
 
     public win() {
+        this.hideModals();
         $('#splash-win').show();
         this.scene.game.scene.stop('default');
     }
 
     public drawMiniMap() {
+        Array.prototype.slice.call(document.querySelectorAll('.minimap-planet')).forEach(el => el.parentNode.removeChild(el));
         const minimap = $('#minimap');
         for (const planet of this.scene.level.planets) {
             const xp = planet.x / this.scene.level.width;
@@ -732,6 +735,7 @@ export default class UI implements Entity {
                 left: (xp * 100) + '%',
                 top: (yp * 100) + '%',
                 backgroundColor: planet.getPlanetColor(this.playerShip.team),
+                display: this.scene.classic.explored[Math.floor(planet.x / 600) + ',' + Math.floor(planet.y / 600)] ? '' : 'none',
             }));
         }
     }

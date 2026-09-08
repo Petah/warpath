@@ -29,7 +29,15 @@ export default class Ship implements Entity {
 
     public speed: number = 0;
     public direction: number = 0;
-    public maxSpeed: number = 100;
+    public maxSpeed: number = 200;
+    public cruiseSpeed = 60;
+    public lives = 3;
+    public shieldsEnabled = true;
+    public cloaked = false;
+    public infected = false;
+    public disrupting = false;
+    private previousX: number;
+    private previousY: number;
 
     private stopOnPlanet: Planet = null;
     public stoppedOnPlanet: Planet = null;
@@ -37,7 +45,6 @@ export default class Ship implements Entity {
     public mining: number = 0;
     public miningSpeed: number = 0.02;
 
-    protected cursors: Phaser.Input.Keyboard.CursorKeys;
     protected keyMine: Phaser.Input.Keyboard.Key;
 
     public money: number = 500;
@@ -77,15 +84,10 @@ export default class Ship implements Entity {
         this.setStoppedOnPlanet(startPlanet);
         this.image = this.scene.physics.add.image(startPlanet.x, startPlanet.y - 10, shipSprite);
         this.image.depth = 200;
+        this.image.setCollideWorldBounds(true);
+        this.previousX = this.image.x; this.previousY = this.image.y;
 
         if (this.team.isPlayerTeam) {
-            this.cursors = this.scene.input.keyboard.addKeys({
-                up: Phaser.Input.Keyboard.KeyCodes.W,
-                down: Phaser.Input.Keyboard.KeyCodes.S,
-                left: Phaser.Input.Keyboard.KeyCodes.A,
-                right: Phaser.Input.Keyboard.KeyCodes.D,
-                space: Phaser.Input.Keyboard.KeyCodes.SPACE,
-            });
             this.keyMine = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
 
             this.scene.input.on('pointerdown', (pointer) => {
@@ -96,44 +98,8 @@ export default class Ship implements Entity {
                 const px = this.scene.cameras.main.worldView.x + pointer.x;
                 const py = this.scene.cameras.main.worldView.y + pointer.y;
                 const direction = GM.pointDirection(this.x, this.y, this.scene.cameras.main.worldView.x + pointer.x, this.scene.cameras.main.worldView.y + pointer.y);
-                if (pointer.buttons == 1) {
-                    if (this.mining <= 0) {
-                        this.direction = direction;
-                        this.speed = this.maxSpeed;
-                        this.setStoppedOnPlanet(null);
-
-                        const planet = this.planetAtPoint(px, py, 2);
-                        if (planet) {
-                            this.stopOnPlanet = planet;
-                        } else {
-                            this.stopOnPlanet = null;
-                        }
-                    }
-                }
-                if (pointer.buttons == 2) {
-                    if (this.weapon == 'mine') {
-                        if (this.charge > this.items[this.weapon].item.fireCost && this.items[this.weapon].amount > 1) {
-                            this.charge -= this.items[this.weapon].item.fireCost;
-                            this.items[this.weapon].amount -= 1;
-                            const bullet = new Mine(this.scene, this, px, py, direction, this.items[this.weapon].item.damage, this.items[this.weapon].item.bulletType);
-                            this.scene.addEntity(bullet);
-                        }
-                    } else if (this.weapon) {
-                        if (this.charge > this.items[this.weapon].item.fireCost && this.items[this.weapon].amount > 1) {
-                            this.charge -= this.items[this.weapon].item.fireCost;
-                            this.items[this.weapon].amount -= 1;
-                            const bullet = new Bullet(this.scene, this, px, py, direction, this.items[this.weapon].item.damage, this.items[this.weapon].item.bulletType);
-                            this.scene.addEntity(bullet);
-                        }
-                    } else {
-                        const fireCost = 0.19;
-                        if (this.charge > fireCost) {
-                            this.charge -= fireCost;
-                            const laser = new Laser(this.scene, this, px, py, direction);
-                            this.scene.addEntity(laser);
-                        }
-                    }
-                }
+                if (pointer.buttons == 1) this.navigate(px, py, this.planetAtPoint(px, py, 2));
+                if (pointer.buttons == 2) this.fireAt(px, py);
             });
             this.scene.input.on('pointermove', (pointer) => {
                 const px = this.scene.cameras.main.worldView.x + pointer.x;
@@ -188,14 +154,24 @@ export default class Ship implements Entity {
         this.image.setVelocityX(vx);
         this.image.setVelocityY(vy);
 
-        this.energy -= this.speed * 0.0000025;
+        const freeSpeed = this.maxEnergy * 20;
+        this.energy = Math.min(this.maxEnergy, this.energy + (this.speed <= freeSpeed ? 0.0003 : -(this.speed - freeSpeed) * 0.0000025));
+        if (this.energy < 0.15) this.speed = Math.min(this.speed, freeSpeed);
+        if (this.cloaked || this.disrupting) {
+            this.charge = Math.max(0, this.charge - 0.004);
+            if (!this.charge) { this.cloaked = false; this.disrupting = false; }
+        }
+        this.image.alpha = this.cloaked ? 0.3 : 1;
+        const crossed = (this.previousX - 1500) * (this.x - 1500) < 0 || (this.previousY - 1500) * (this.y - 1500) < 0;
+        if (crossed) { this.damage(0.5, this.direction); this.scene.classic.log('ALERT > Energy barrier crossed. Hull and shields stressed.'); }
+        this.previousX = this.x; this.previousY = this.y;
 
         const planet = this.planetAtPoint(this.x, this.y, 3.5);
         if (planet && planet === this.stopOnPlanet) {
             this.speed = 0;
             this.stopOnPlanet = null;
             this.setStoppedOnPlanet(planet);
-            if (this.cargo > 0 && this.stoppedOnPlanet.canSell) {
+            if (this.cargo > 0 && this.canBuy()) {
                 this.scene.ui.showModalSell();
             }
         }
@@ -246,6 +222,7 @@ export default class Ship implements Entity {
     }
 
     drawShield() {
+        if (!this.shieldsEnabled || this.cloaked || this.mining > 0) return;
         for (let i = this.ellipses.length - 1; i >= 0; i--) {
             if (i >= this.maxShield) {
                 continue;
@@ -274,6 +251,7 @@ export default class Ship implements Entity {
     }
 
     protected checkDeath(): Boolean {
+        if (this.lives <= 0) return true;
         if (this.dead > 0) {
             this.dead--;
             if (this.dead <= 0) {
@@ -284,14 +262,19 @@ export default class Ship implements Entity {
                 this.maxCharge = 1;
                 this.shield = 1;
                 this.maxShield = 1;
+                this.cargo = 0; this.maxCargo = 1; this.colonists = 0;
+                this.weapon = null; this.shieldsEnabled = true; this.infected = false;
                 for (const key in this.items) {
                     this.items[key].amount = 0;
                 }
                 for (const entity of this.scene.entities) {
                     if (entity instanceof Planet) {
-                        if (entity.getAllegiance(this.team) > 0.5) {
+                        if (entity.getAllegiance(this.team) > 66) {
                             this.image.x = entity.x;
                             this.image.y = entity.y - 10;
+                            this.previousX = this.image.x; this.previousY = this.image.y;
+                            this.setStoppedOnPlanet(entity);
+                            break;
                         }
                     }
                 }
@@ -350,14 +333,15 @@ export default class Ship implements Entity {
     }
 
     sell(amount: number = null) {
-        if (!this.stoppedOnPlanet || this.cargo <= 0) {
-            return;
+        if (!this.canBuy() || this.cargo <= 0) {
+            return 0;
         }
         if (!amount || amount > this.cargo) {
             amount = this.cargo;
         }
         this.money += this.getSellAmount(amount);
         this.cargo -= amount;
+        this.scene.classic.log('Trading post > Sold ' + Math.round(amount * 1000) + ' tons of ore.');
         this.stoppedOnPlanet.resources += amount;
         if (this.stoppedOnPlanet.resources > 100) {
             this.stoppedOnPlanet.resources = 100;
@@ -365,8 +349,8 @@ export default class Ship implements Entity {
     }
 
     getSellAmount(amount: number = null): number {
-        if (!this.stoppedOnPlanet || this.cargo <= 0) {
-            return;
+        if (!this.canBuy() || this.cargo <= 0) {
+            return 0;
         }
         if (!amount || amount > this.cargo) {
             amount = this.cargo;
@@ -375,52 +359,41 @@ export default class Ship implements Entity {
     }
 
     buyItem(item: Item, amount: number) {
-        if (item.key == 'cargo-pod') {
-            if (this.maxCargo < 6) {
-                this.maxCargo += 1;
-                this.money -= item.price;
-            }
-        } else if (item.key == 'energy-pod') {
-            if (this.maxEnergy < 6) {
-                this.energy += 0.999;
-                this.maxEnergy += 1;
-                this.money -= item.price;
-                this.maxSpeed = 100 + (200 * this.maxEnergy / 5);
-            }
-        } else if (item.key == 'charge-pod') {
-            if (this.maxCharge < 6) {
-                this.charge += 0.999;
-                this.maxCharge += 1;
-                this.money -= item.price;
-            }
-        } else if (item.key == 'shield') {
-            if (this.maxShield < 6) {
-                this.shield += 1;
-                this.maxShield += 1;
-                this.money -= item.price;
-            }
-        } else {
-            if (item.price * amount > this.money) {
-                amount = Math.floor(this.money / item.price);
-            }
-            this.items[item.key].amount += amount;
-            this.money -= item.price * amount;
-        }
+        if (!this.canBuy() || !isFinite(amount) || amount <= 0) return;
+        amount = Math.min(Math.floor(amount), Math.floor(this.money / item.price));
+        const capacities = { 'cargo-pod': 'maxCargo', 'energy-pod': 'maxEnergy', 'charge-pod': 'maxCharge', shield: 'maxShield' };
+        const capacity = capacities[item.key];
+        if (capacity) amount = Math.min(amount, 6 - this[capacity]);
+        if (['cloak', 'disrupter', 'warp-drive'].indexOf(item.key) >= 0) amount = Math.min(amount, 1 - this.items[item.key].amount);
+        if (amount <= 0) { this.scene.classic.log('Trading post > Insufficient credits, or equipment already at capacity.'); return; }
+        if (capacity) {
+            this[capacity] += amount;
+            if (item.key == 'energy-pod') this.energy += amount;
+            if (item.key == 'charge-pod') this.charge += amount;
+            if (item.key == 'shield') this.shield += amount;
+        } else this.items[item.key].amount += amount;
+        this.money -= item.price * amount;
+        this.scene.classic.log('Trading post > Bought ' + amount + ' × ' + item.name + '.');
+        this.scene.ui.updateUi();
     }
 
     damage(amount: number, blastDirection: number) {
-        if (this.shield > 0) {
-            this.shield -= amount;
-            this.maxShield = Math.ceil(this.shield);
-            if (this.shield < 0) {
-                this.energy += this.shield;
-                this.shield = 0;
-            }
-        } else {
-            this.energy -= amount;
-        }
+        if (this.dead > 0 || this.lives <= 0) return;
+        if (this.team.isPlayerTeam) this.scene.classic.resetView();
+        const disruptors = [this.scene.playerShip].concat(this.scene.enemyShips).filter(ship => ship.disrupting && Math.floor(ship.x/600) === Math.floor(this.x/600) && Math.floor(ship.y/600) === Math.floor(this.y/600)).length;
+        const layers = this.shieldsEnabled && !this.cloaked && this.mining <= 0 ? Math.floor(Math.ceil(this.shield) / Math.pow(2, disruptors)) : 0;
+        this.energy -= amount / Math.pow(2, layers);
+        if (layers > 0) { this.shield = Math.max(0, this.shield - amount * 0.1); this.maxShield = Math.ceil(this.shield); }
         if (this.energy <= 0) {
-            console.log('Dead', this);
+            this.lives--;
+            this.setStoppedOnPlanet(null);
+            this.stopOnPlanet = null;
+            this.stopMining();
+            this.cloaked = false; this.disrupting = false;
+            if (this.team.isPlayerTeam) {
+                this.scene.classic.log('ALERT > Ship destroyed. ' + this.lives + ' ships remaining.');
+                if (this.lives <= 0) this.scene.ui.lose();
+            }
             this.dead = 100;
             this.speed = 0;
             this.image.alpha = 0;
@@ -445,10 +418,13 @@ export default class Ship implements Entity {
             this.stoppedOnPlanet = value;
             if (value != null) {
                 value.isShipStopped = true;
+                if (value.sickness > 0) this.infected = true;
+                else if (this.infected && value.getTotalPopulationConsumed() > 0) value.sickness = 10;
 
-                this.energy = this.maxEnergy;
+                if (value.getAllegiance(this.team) > 66) this.energy = Math.max(this.energy, this.maxEnergy * value.spacePort);
+                if (this.team.isPlayerTeam && this.scene.classic && this.scene.playerShip) this.scene.classic.visit(value);
 
-                if (this.stoppedOnPlanet.takeColonistsTimer <= 0) {
+                if (value.getAllegiance(this.team) > 66 && this.stoppedOnPlanet.takeColonistsTimer <= 0) {
                     let takeColonistsAmount = Math.floor(this.stoppedOnPlanet.getTotalPopulationConsumed() / 10);
                     if (this.colonists + takeColonistsAmount > this.maxColonists) {
                         takeColonistsAmount = this.maxColonists - this.colonists;
@@ -475,7 +451,7 @@ export default class Ship implements Entity {
 
     stopMining() {
         this.mining = 0;
-        this.miningAudio.stop();
+        if (this.miningAudio) this.miningAudio.stop();
     }
 
     canMine() {
@@ -490,10 +466,8 @@ export default class Ship implements Entity {
     }
 
     canPopulate() {
-        if (!this.stoppedOnPlanet) {
-            return false;
-        }
-        return true;
+        return this.stoppedOnPlanet != null && this.colonists >= 200 &&
+            (!this.stoppedOnPlanet.getTotalPopulationConsumed() || this.stoppedOnPlanet.getAllegiance(this.team) > 66);
     }
 
     canBuy() {
@@ -513,7 +487,7 @@ export default class Ship implements Entity {
         if (this.stoppedOnPlanet.getAllegiance(this.team) <= 33) {
             return false;
         }
-        if (this.money < 10000) {
+        if (this.money < (this.scene.classic ? this.scene.classic.investment : 10000)) {
             return false;
         }
         return true;
@@ -530,7 +504,7 @@ export default class Ship implements Entity {
         if (!this.canPopulate()) {
             return;
         }
-        let populateAmount = 100;
+        let populateAmount = Math.max(200, Math.floor(this.colonists / 2));
         if (populateAmount > this.colonists) {
             populateAmount = this.colonists;
         }
@@ -543,35 +517,83 @@ export default class Ship implements Entity {
             this.stoppedOnPlanet.populations.setAllegianceForTeam(this.team, 100);
         }
         this.scene.ui.drawMiniMap();
+        this.scene.classic.log('Colony > Delivered ' + populateAmount + ' colonists to ' + this.stoppedOnPlanet.name + '.');
     }
 
     invest(tech) {
         if (!this.canInvest()) {
             return;
         }
-        let amount = 0.1;
-        this.stoppedOnPlanet[tech] += amount;
-        if (this.stoppedOnPlanet[tech] > 1) {
-            this.stoppedOnPlanet[tech] = 1;
-        }
-        this.money -= 10000;
+        if (['defence','education','industry','mining','spacePort','agriculture'].indexOf(tech) < 0) return;
+        if (this.stoppedOnPlanet[tech] >= 1) { this.scene.classic.log('Investment > This facility is fully developed.'); return; }
+        const cost = this.scene.classic.investment;
+        this.stoppedOnPlanet[tech] = Math.min(1, this.stoppedOnPlanet[tech] + cost / 100000);
+        this.money -= cost;
+        const allegiance = this.stoppedOnPlanet.getAllegiance(this.team) || 0;
+        this.stoppedOnPlanet.populations.setAllegianceForTeam(this.team, Math.min(100, allegiance + cost / 1000));
+        if (this.stoppedOnPlanet.getAllegiance(this.team) > 66) this.stoppedOnPlanet.team = this.team;
         if (tech == 'defence') {
             this.stoppedOnPlanet.maxShield = Math.round(5 * this.stoppedOnPlanet.defence);
             this.stoppedOnPlanet.shield = this.stoppedOnPlanet.maxShield;
         }
+        this.scene.ui.drawMiniMap(); this.scene.ui.updateUi();
+        this.scene.classic.log('Investment > ' + cost.toLocaleString() + ' credits invested on ' + this.stoppedOnPlanet.name + '.');
+        const inhabited = this.scene.level.planets.filter(p => p.getTotalPopulationConsumed() > 0);
+        if (inhabited.length && inhabited.every(p => p.getAllegiance(this.team) > 66)) this.scene.ui.win();
     }
 
-    warp(x, y) {
-        this.speed = 0;
+    navigate(x: number, y: number, planet: Planet = null) {
+        if (this.dead > 0) return;
+        this.stopMining();
+        this.setStoppedOnPlanet(null);
+        this.stopOnPlanet = planet;
+        this.direction = GM.pointDirection(this.x, this.y, x, y);
+        this.speed = this.cruiseSpeed || 60;
+        this.scene.classic.log(planet ? 'Helm > Course set for ' + planet.name + '.' : 'Helm > New course set.');
+    }
 
-        this.image.alpha = 0.0;
+    stop() { this.speed = 0; this.stopOnPlanet = null; this.image.setVelocity(0, 0); this.stopMining(); }
+    adjustSpeed(notches: number) { this.cruiseSpeed = Math.max(0, Math.min(this.maxSpeed, (this.speed || this.cruiseSpeed) + notches * 20)); this.stopMining(); this.setStoppedOnPlanet(null); this.speed = this.cruiseSpeed; this.scene.classic.update(); }
+    reverse() { this.direction = (this.direction + 180) % 360; this.stopOnPlanet = null; this.setStoppedOnPlanet(null); this.speed = this.cruiseSpeed; this.stopMining(); }
 
-        setTimeout(() => {
-            this.image.alpha = 1.0;
-            this.image.x = x;
-            this.image.y = y;    
-        }, 1000);
+    fireAt(x: number, y: number) {
+        if (this.dead > 0 || this.cloaked) return;
+        const direction = GM.pointDirection(this.x, this.y, x, y);
+        if (!this.weapon) {
+            if (this.charge < 0.19) return;
+            this.charge -= 0.19;
+            this.scene.addEntity(new Laser(this.scene, this, x, y, direction));
+            return;
+        }
+        const stock = this.items[this.weapon];
+        if (!stock || stock.amount < 1 || this.charge < stock.item.fireCost) { this.scene.classic.log('Weapons > Out of ammunition or insufficient charge.'); return; }
+        this.charge -= stock.item.fireCost; stock.amount--;
+        if (this.weapon === 'bio') {
+            const planet = this.planetAtPoint(x, y, 2);
+            if (planet && GM.pointDistance(this.x,this.y,planet.x,planet.y) < 600) planet.sickness = Math.min(100, planet.sickness + 50);
+            this.scene.soundManager.play('plague');
+        } else if (this.weapon === 'mine') this.scene.addEntity(new Mine(this.scene, this, x, y, direction, stock.item.damage, stock.item.bulletType));
+        else this.scene.addEntity(new Bullet(this.scene, this, x, y, direction, stock.item.damage, stock.item.bulletType));
+    }
 
-        
+    toggleEquipment(key: string) {
+        if (!this.items[key].amount) { this.scene.classic.log('Equipment > Buy this device at a trading post first.'); return; }
+        if (key === 'cloak') { this.cloaked = !this.cloaked; this.scene.soundManager.play(this.cloaked ? 'stealth-on' : 'stealth-off'); }
+        if (key === 'disrupter') { this.disrupting = !this.disrupting; this.scene.soundManager.play(this.disrupting ? 'disrupter-on' : 'disrupter-off'); }
+    }
+    curePlague() {
+        if (!this.items['anti-bio'].amount) { this.scene.classic.log('Medical > Buy an antibody crystal first.'); return; }
+        this.items['anti-bio'].amount--; this.infected = false;
+        this.scene.level.planets.forEach(planet => { if (Math.floor(planet.x/600) === Math.floor(this.x/600) && Math.floor(planet.y/600) === Math.floor(this.y/600)) planet.sickness = 0; });
+        this.scene.soundManager.play('antibio'); this.scene.classic.log('Medical > Sector sterilized.');
+    }
+    warp(x: number, y: number) {
+        if (!this.items['warp-drive'].amount || this.charge < 1) { this.scene.classic.log('Warp > Requires an installed drive and one unit of charge.'); return; }
+        this.charge -= 1;
+        this.stop(); this.setStoppedOnPlanet(null);
+        this.image.x = Math.max(25, Math.min(this.scene.level.width - 25, x));
+        this.image.y = Math.max(25, Math.min(this.scene.level.height - 25, y));
+        this.previousX = this.x; this.previousY = this.y;
+        this.scene.classic.log('Warp > Jump complete.');
     }
 };

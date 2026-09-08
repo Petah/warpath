@@ -44,7 +44,9 @@ export default class Assets {
             numkey: 'click', mining: 'mining', explosion: 'boom',
             laser: 'laser', 'laser-hit': 'crack', 'nuke-exp': 'neutron',
             menu_switch: 'click', nooo: 'deadship', torpedo: 'torpedo',
-            mine: 'mine',
+            mine: 'mine', plague: 'plague', antibio: 'antibio',
+            'stealth-on': 'stelon', 'stealth-off': 'steloff',
+            'disrupter-on': 'scrmon', 'disrupter-off': 'scrmoff',
         };
         for (const key of Object.keys(sounds)) {
             this.scene.load.audio(key, 'original/sounds/' + sounds[key] + '.wav');

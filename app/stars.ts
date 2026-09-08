@@ -25,15 +25,16 @@ export default class Stars implements Entity {
         });
         this.graphics.depth = 50;
 
-        const gridSize = 600;
-        for (let x = gridSize; x < this.scene.level.width - gridSize; x += gridSize) {
-            const line = new Phaser.Geom.Line(x, 0, x, this.scene.level.height);
-            this.graphics.strokeLineShape(line);
+        // Dashed sector boundaries and the central quadrant energy barriers.
+        for (let n = 600; n < this.scene.level.width; n += 600) {
+            for (let step = 0; step < this.scene.level.width; step += 16) {
+                this.graphics.strokeLineShape(new Phaser.Geom.Line(n, step, n, step + 5));
+                this.graphics.strokeLineShape(new Phaser.Geom.Line(step, n, step + 5, n));
+            }
         }
-        for (let y = gridSize; y < this.scene.level.height - gridSize; y += gridSize) {
-            const line = new Phaser.Geom.Line(0, y, this.scene.level.height, y);
-            this.graphics.strokeLineShape(line);
-        }
+        this.graphics.lineStyle(2, 0xff3311, 0.8);
+        this.graphics.strokeLineShape(new Phaser.Geom.Line(1500, 0, 1500, 3000));
+        this.graphics.strokeLineShape(new Phaser.Geom.Line(0, 1500, 3000, 1500));
     }
 
     update() {
@@ -49,7 +50,7 @@ export default class Stars implements Entity {
 
 class Layer {
     private stars: Star[] = [];
-    private starCount: number = 1000;
+    private starCount: number = 400;
     constructor(
         private scene: DefaultScene,
         private offset,
@@ -59,7 +60,7 @@ class Layer {
             const y = Math.random() * this.scene.level.height;
             const image = this.scene.add.image(x, y, 'star');
             image.depth = offset;
-            const scale = offset * 0.15 + 0.1;
+            const scale = 0.08 + Math.random() * 0.06;
             image.setScale(scale, scale);
             image.setAlpha(1 / (offset / Math.random()) * 2);
             const star = new Star(x, y, image);

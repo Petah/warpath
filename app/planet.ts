@@ -36,6 +36,7 @@ export default class Planet implements Entity {
     private nameText: Phaser.GameObjects.Text;
 
     public sickness: number = 0;
+    private distressReported = false;
 
     public attackRange = 200;
     public attackPower = 200;
@@ -73,10 +74,6 @@ export default class Planet implements Entity {
         this.planetSize = size;
         this.planetScale = size / 74.0;
         this.planetType = type;
-
-        var sprite = this.scene.add.sprite(this.x, this.y, this.spriteNameFor(type)).setScale(this.planetScale, this.planetScale);
-        sprite.depth = 100;
-        sprite.play(this.animationNameFor(type));
 
         this.nameText = this.scene.add.text(x + 15, y + 15, "");
         this.image = this.scene.physics.add
@@ -156,7 +153,7 @@ export default class Planet implements Entity {
         }
 
         const shipToShoot = this.findShipToShootAt();
-        if (shipToShoot && this.populations.species && shipToShoot.species !== this.populations.species
+        if (shipToShoot && this.populations.species && this.getAllegiance(shipToShoot.team) < 34
             && this.framesSinceAttack >= this.framesPerAttack) {
             const direction = GM.pointDirection(this.x, this.y, shipToShoot.x, shipToShoot.y);
             const bullet = new Bullet(this.scene, this, shipToShoot.x, shipToShoot.y, direction, this.scene.items.items[0].damage, BulletType.torpedo);
@@ -170,33 +167,17 @@ export default class Planet implements Entity {
     }
 
     public getPlanetColor(team: Team) {
-        const allegiance = this.getAllegiance(team);
-        let color = '#ddd';
-        if (this.getTotalPopulationConsumed() > 0) {
-            if (allegiance <= 33) {
-                color = '#ff0000';
-            } else if (allegiance <= 66) {
-                color = '#ffff00';
-            } else {
-                color = '#00ff00';
-            }
-        }
-        return color;
+        const color = this.getPlanetColorHex(team);
+        return '#' + ('000000' + color.toString(16)).slice(-6);
     }
 
     public getPlanetColorHex(team: Team) {
+        if (team.isPlayerTeam && this.scene.classic && this.scene.playerShip && !this.scene.classic.isKnown(this)) return 0x999999;
         const allegiance = this.getAllegiance(team);
-        let color = 0xdddddd;
-        if (this.getTotalPopulationConsumed() > 0) {
-            if (allegiance <= 33) {
-                color = 0xff0000;
-            } else if (allegiance <= 66) {
-                color = 0xffff00;
-            } else {
-                color = 0x00ff00;
-            }
-        }
-        return color;
+        if (!this.getTotalPopulationConsumed()) return 0xdddddd;
+        if (allegiance <= 33) return team.color === 0x00ff00 ? 0xff0000 : 0x00ff00;
+        if (allegiance <= 66) return 0xffff00;
+        return team.color;
     }
 
     private getShieldColor(amount) {
@@ -223,7 +204,7 @@ export default class Planet implements Entity {
         };
         for (const ship of this.scene.entities) {
             if (ship instanceof Ship) {
-                if (ship.species != this.populations.species && ship.dead <= 0) {
+                if (this.getAllegiance(ship.team) < 34 && !ship.cloaked && ship.dead <= 0) {
                     const distance = GM.pointDistance(this.x, this.y, ship.x, ship.y);
                     if (!closest.ship || closest.distance > distance) {
                         closest.ship = ship;
@@ -241,6 +222,15 @@ export default class Planet implements Entity {
     slowUpdate() {
         this.draw();
         this.populations.calculatePopulationChange(this.maxPopulation);
+        if (this.resources < 5 && this.getAllegiance(this.scene.playerTeam) > 66 && !this.distressReported) {
+            this.scene.classic.log('Distress > ' + this.name + ' is running out of ore. Deliver resources.');
+            this.distressReported = true;
+        }
+        if (this.resources >= 5) this.distressReported = false;
+        if (this.populations.quantity > 0) {
+            this.resources = Math.max(0, Math.min(100, this.resources + this.mining * 0.1 - this.populations.quantity / 100000));
+            if (this.sickness > 0) this.populations.quantity = Math.max(0, this.populations.quantity * (1 - this.sickness / 10000));
+        }
 
         if(this.populations) {
             if(this.populations.getAllegianceForPlayer(this.scene.playerShip.team) > 66) {
@@ -504,32 +494,18 @@ export default class Planet implements Entity {
         return this.populations.getAllegianceForPlayer(team);
     }
     damage(amount: number, blastDirection: number) {
-        const killPop = this.populations.quantity * amount + 200.0;
-        if (this.shield > 0) {
-            this.shield -= amount;
-            this.maxShield = Math.ceil(this.shield);
-            if (this.shield < 0) {
-                this.populations.quantity += killPop * this.shield;
-                //console.log("planet: " + this.populations.quantity + "("+ killPop * amount * -1.0 +")");
-                this.shield = 0;
-            }
-        } else {
-            this.populations.quantity -= killPop * amount;
-            //console.log("planet: " + this.populations.quantity + "("+ killPop * amount * -1.0 +")");
-        }
+        const disruptors = [this.scene.playerShip].concat(this.scene.enemyShips).filter(ship => ship.disrupting && Math.floor(ship.x / 600) === Math.floor(this.x / 600) && Math.floor(ship.y / 600) === Math.floor(this.y / 600)).length;
+        const layers = Math.floor(Math.ceil(this.shield) / Math.pow(2, disruptors));
+        const impact = amount / Math.pow(2, layers);
+        this.shield = Math.max(0, this.shield - amount * 0.1);
+        this.maxShield = Math.ceil(this.shield);
+        this.populations.quantity -= (this.populations.quantity * impact + 200) * impact;
         if (this.populations.quantity <= 0) {
             this.populations.quantity = 0;
             this.populations.species = null;
-            const {
-                totalHuman,
-                totalHumanPlanet,
-                totalOrk,
-            } = this.scene.ui.getTotalScores();
-            if (totalOrk <= 0) {
-                this.scene.ui.win();
-            } else if (totalHuman <= 0) {
-                this.scene.ui.lose();
-            }
+            const inhabited = this.scene.level.planets.filter(p => p.getTotalPopulationConsumed() > 0);
+            if (inhabited.length && inhabited.every(p => p.getAllegiance(this.scene.playerTeam) > 66)) this.scene.ui.win();
+            else if (!inhabited.some(p => p.getAllegiance(this.scene.playerTeam) > 66)) this.scene.ui.lose();
         }
     }
 }
