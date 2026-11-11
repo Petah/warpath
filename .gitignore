@@ -36,3 +36,6 @@ bower_components/
 original-assets/
 __pycache__/
 *.pyc
+
+# Cloudflare
+.wrangler/

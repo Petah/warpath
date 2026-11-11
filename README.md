@@ -2,6 +2,14 @@
 
 A browser remake of [Synthetic Reality's Warpath](http://www.synthetic-reality.com/warpath.htm), built for Global Game Jam 2019 with Phaser 3.13, TypeScript, and Brunch.
 
+**[Play it in your browser](https://warpath.projectz.co.nz)** (desktop, with a mouse).
+
+![The Warpath cockpit](docs/screenshot.webp)
+
+## Credits
+
+Warpath is the work of Synthetic Reality. This is an unofficial fan remake. It is not an official Synthetic Reality release. The original artwork, sound effects and help file belong to Synthetic Reality and are used with the original developer's permission.
+
 ## Run locally
 
 Requires Node.js 24, npm, and Git (two historical development dependencies are pinned to GitHub commits). Verified with Node.js 24.19.0 and npm 11.17.0. If you use nvm, run `nvm use` to select the version from `.nvmrc`.
@@ -42,6 +50,8 @@ npm run build
 ```sh
 python3 -m http.server 3333 --bind 127.0.0.1 --directory public
 ```
+
+`npm run deploy` makes a clean production build, drops the source maps, and publishes `public/` to Cloudflare at warpath.projectz.co.nz (see `wrangler.jsonc`). Run `npx wrangler login` first.
 
 ## Project status
 
