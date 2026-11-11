@@ -11,8 +11,7 @@
   "scripts": {
     "start": "brunch watch --server",
     "build": "brunch build --production",
-    "test": "tsc --noEmit && node tests/gameplay.cjs",
-    "deploy": "rm -rf public && brunch build --production && rm -f public/*.map && npx --yes wrangler@4 deploy"
+    "test": "tsc --noEmit && node tests/gameplay.cjs"
   },
   "dependencies": {
     "phaser": "3.13.0"

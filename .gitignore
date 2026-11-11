@@ -39,3 +39,7 @@ __pycache__/
 
 # Cloudflare
 .wrangler/
+
+# Deploy config and scripts stay local
+wrangler.jsonc
+deploy.local.sh

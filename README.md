@@ -51,8 +51,6 @@ npm run build
 python3 -m http.server 3333 --bind 127.0.0.1 --directory public
 ```
 
-`npm run deploy` makes a clean production build, drops the source maps, and publishes `public/` to Cloudflare at warpath.projectz.co.nz (see `wrangler.jsonc`). Run `npx wrangler login` first.
-
 ## Project status
 
 The original latest commit is `d711692`, dated 27 January 2019. This is a playable jam prototype with a generated galaxy, three AI opponents, mining, colonization, planet investment, trading, and weapons. There is no backend or account setup.
